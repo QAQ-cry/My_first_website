@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流水</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #f9f9f9;
+            --text-color: #333;
+            --card-bg: #fff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-mode {
+            --primary-color: #4a9fe4;
+            --secondary-color: #34495e;
+            --background-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --card-bg: #2d2d2d;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .card p {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0.5rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">学习空间</div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#projects">项目</a></li>
+                        <li><a href="#videos">视频</a></li>
+                        <li><a href="#articles">文章</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                    </ul>
+                </nav>
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>欢迎来到流水学习空间</h1>
+            <p>这里展示我们的学习成果，包括软件项目、教学视频和学习笔记</p>
+        </div>
+    </section>
+
+    <section class="section" id="projects">
+        <div class="container">
+            <h2 class="section-title">软件项目</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="web">Web应用</button>
+                <button class="filter-btn" data-filter="mobile">移动应用</button>
+                <button class="filter-btn" data-filter="desktop">桌面应用</button>
+            </div>
+            <div class="content-grid">
+                <div class="card" data-category="web">
+                    <img src="https://via.placeholder.com/300x200" alt="项目预览" class="card-img">
+                    <div class="card-content">
+                        <h3>任务管理器</h3>
+                        <div class="card-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">React</span>
+                        </div>
+                        <p>一个简洁的任务管理应用，支持任务分类、优先级设置和进度跟踪。</p>
+                        <a href="#" class="btn">查看详情</a>
+                    </div>
+                </div>
+                <div class="card" data-category="mobile">
+                    <img src="https://via.placeholder.com/300x200" alt="项目预览" class="card-img">
+                    <div class="card-content">
+                        <h3>天气应用</h3>
+                        <div class="card-tags">
+                            <span class="tag">Flutter</span>
+                            <span class="tag">Dart</span>
+                        </div>
+                        <p>一款美观的天气应用，提供实时天气信息和未来天气预报。</p>
+                        <a href="#" class="btn">查看详情</a>
+                    </div>
+                </div>
+                <div class="card" data-category="desktop">
+                    <img src="https://via.placeholder.com/300x200" alt="项目预览" class="card-img">
+                    <div class="card-content">
+                        <h3>文件整理工具</h3>
+                        <div class="card-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">PyQt</span>
+                        </div>
+                        <p>一个桌面应用程序，帮助用户自动整理和分类计算机中的文件。</p>
+                        <a href="#" class="btn">查看详情</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="videos">
+        <div class="container">
+            <h2 class="section-title">学习视频</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" alt="视频封面" class="card-img">
+                    <div class="card-content">
+                        <h3>React Hooks 详解</h3>
+                        <div class="card-tags">
+                            <span class="tag">React</span>
+                            <span class="tag">JavaScript</span>
+                        </div>
+                        <p>深入讲解React Hooks的使用方法和最佳实践。</p>
+                        <a href="#" class="btn">观看视频</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" alt="视频封面" class="card-img">
+                    <div class="card-content">
+                        <h3>Python数据可视化</h3>
+                        <div class="card-tags">
+                            <span class="tag">Python</span>
+                            <span class="tag">Matplotlib</span>
+                        </div>
+                        <p>使用Python进行数据可视化的完整教程。</p>
+                        <a href="#" class="btn">观看视频</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/300x200" alt="视频封面" class="card-img">
+                    <div class="card-content">
+                        <h3>Git版本控制入门</h3>
+                        <div class="card-tags">
+                            <span class="tag">Git</span>
+                            <span class="tag">版本控制</span>
+                        </div>
+                        <p>适合初学者的Git版本控制入门教程。</p>
+                        <a href="#" class="btn">观看视频</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="articles">
+        <div class="container">
+            <h2 class="section-title">学习笔记</h2>
+            <div class="content-grid">
+                <div class="card">
+                    <div class="card-content">
+                        <h3>JavaScript闭包详解</h3>
+                        <div class="card-tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">闭包</span>
+                        </div>
+                        <p>深入理解JavaScript闭包的概念、原理和应用场景。</p>
+                        <a href="#" class="btn">阅读全文</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>CSS Grid布局完全指南</h3>
+                        <div class="card-tags">
+                            <span class="tag">CSS</span>
+                            <span class="tag">Grid</span>
+                        </div>
+                        <p>全面介绍CSS Grid布局的各种属性和使用方法。</p>
+                        <a href="#" class="btn">阅读全文</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <h3>算法复杂度分析</h3>
+                        <div class="card-tags">
+                            <span class="tag">算法</span>
+                            <span class="tag">数据结构</span>
+                        </div>
+                        <p>如何分析和评估算法的时间复杂度和空间复杂度。</p>
+                        <a href="#" class="btn">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <div class="container">
+            <h2 class="section-title">关于我们</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p>我们是一群热爱学习的技术爱好者，专注于Web开发、移动应用开发和数据科学等领域。这个网站是我们记录和分享学习过程的地方，希望能与大家共同进步。</p>
+                <div style="margin-top: 2rem;">
+                    <a href="#" class="btn" style="margin-right: 1rem;">联系我们</a>
+                    <a href="#" class="btn">查看简历</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 我们的学习空间. 保留所有权利.</p>
+                <div class="social-links">
+                    <a href="#">GitHub</a>
+                    <a href="#">微博</a>
+                    <a href="#">知乎</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // 项目筛选功能
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('#projects .card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // 更新活动按钮
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const filter = button.getAttribute('data-filter');
+                
+                // 筛选项目
+                projectCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
