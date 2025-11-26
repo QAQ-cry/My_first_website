@@ -5,213 +5,119 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>学习资源展示平台</title>
   <!-- 引入外部资源 -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-  
-  <!-- Tailwind 配置 -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#165DFF',
-            secondary: '#36CFC9',
-            accent: '#722ED1',
-            dark: '#1D2129',
-            light: '#F2F3F5'
-          },
-          fontFamily: {
-            inter: ['Inter', 'system-ui', 'sans-serif'],
-          },
-        },
-      }
-    }
-  </script>
-  
-  <!-- 自定义工具类 -->
-  <style type="text/tailwindcss">
-    @layer utilities {
-      .content-auto {
-        content-visibility: auto;
-      }
-      .text-shadow {
-        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      }
-      .card-hover {
-        @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
-      }
-      .gradient-overlay {
-        background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
-      }
-    }
-  </style>
-  
-  <style>
-    /* 全局样式 */
-    html {
-      scroll-behavior: smooth;
-    }
-    
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-    }
-    
-    /* 动画效果 */
-    .fade-in {
-      animation: fadeIn 0.6s ease-in-out;
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .scale-in {
-      animation: scaleIn 0.4s ease-out;
-    }
-    
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    
-    /* 导航栏滚动效果 */
-    .nav-scrolled {
-      @apply bg-white/95 shadow-md backdrop-blur-sm;
-    }
-    
-    /* 加载动画 */
-    .loader {
-      border-top-color: #165DFF;
-      animation: spinner 0.8s linear infinite;
-    }
-    
-    @keyframes spinner {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-  </style>
+  <!-- 引入自定义CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-light text-dark">
+<body>
   <!-- 导航栏 -->
-  <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent">
-    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
-      <a href="#" class="flex items-center space-x-2">
-        <i class="fa fa-graduation-cap text-primary text-2xl"></i>
-        <span class="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">LearnHub</span>
+  <header id="navbar" class="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <i class="fa fa-graduation-cap logo-icon"></i>
+        <span class="logo-text">LearnHub</span>
       </a>
       
       <!-- 桌面导航 -->
-      <nav class="hidden md:flex items-center space-x-8">
-        <a href="#home" class="font-medium hover:text-primary transition-colors">首页</a>
-        <a href="#desktop-apps" class="font-medium hover:text-primary transition-colors">桌面应用</a>
-        <a href="#web-apps" class="font-medium hover:text-primary transition-colors">Web应用</a>
-        <a href="#videos" class="font-medium hover:text-primary transition-colors">视频资源</a>
-        <a href="#notes" class="font-medium hover:text-primary transition-colors">学习笔记</a>
-        <a href="#code-library" class="font-medium hover:text-primary transition-colors">代码库</a>
+      <nav class="nav-desktop">
+        <a href="#home" class="nav-link">首页</a>
+        <a href="#desktop-apps" class="nav-link">桌面应用</a>
+        <a href="#web-apps" class="nav-link">Web应用</a>
+        <a href="#videos" class="nav-link">视频资源</a>
+        <a href="#notes" class="nav-link">学习笔记</a>
+        <a href="#code-library" class="nav-link">代码库</a>
       </nav>
       
       <!-- 移动端菜单按钮 -->
-      <button id="menuBtn" class="md:hidden text-dark hover:text-primary transition-colors">
-        <i class="fa fa-bars text-2xl"></i>
+      <button id="menuBtn" class="menu-btn">
+        <i class="fa fa-bars"></i>
       </button>
     </div>
     
     <!-- 移动端导航菜单 -->
-    <div id="mobileMenu" class="md:hidden hidden bg-white shadow-lg absolute w-full">
-      <div class="container mx-auto px-4 py-3 flex flex-col space-y-4">
-        <a href="#home" class="font-medium py-2 hover:text-primary transition-colors">首页</a>
-        <a href="#desktop-apps" class="font-medium py-2 hover:text-primary transition-colors">桌面应用</a>
-        <a href="#web-apps" class="font-medium py-2 hover:text-primary transition-colors">Web应用</a>
-        <a href="#videos" class="font-medium py-2 hover:text-primary transition-colors">视频资源</a>
-        <a href="#notes" class="font-medium py-2 hover:text-primary transition-colors">学习笔记</a>
-        <a href="#code-library" class="font-medium py-2 hover:text-primary transition-colors">代码库</a>
+    <div id="mobileMenu" class="nav-mobile">
+      <div class="container">
+        <a href="#home" class="nav-mobile-link">首页</a>
+        <a href="#desktop-apps" class="nav-mobile-link">桌面应用</a>
+        <a href="#web-apps" class="nav-mobile-link">Web应用</a>
+        <a href="#videos" class="nav-mobile-link">视频资源</a>
+        <a href="#notes" class="nav-mobile-link">学习笔记</a>
+        <a href="#code-library" class="nav-mobile-link">代码库</a>
       </div>
     </div>
   </header>
 
   <!-- 英雄区域 -->
-  <section id="home" class="pt-28 pb-16 md:pt-36 md:pb-24 bg-gradient-to-br from-primary/5 to-accent/5">
-    <div class="container mx-auto px-4">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-12">
-        <div class="md:w-1/2 fade-in">
-          <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight mb-4">
-            探索学习的<br/>
-            <span class="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">无限可能</span>
-          </h1>
-          <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-lg">
-            汇集桌面应用、Web项目、学习视频、笔记和代码资源，助力你的学习之旅
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="#desktop-apps" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-primary/30 flex items-center">
-              <i class="fa fa-rocket mr-2"></i> 开始探索
-            </a>
-            <a href="#notes" class="bg-white hover:bg-gray-50 text-dark font-medium px-6 py-3 rounded-lg transition-all shadow-md flex items-center">
-              <i class="fa fa-book mr-2"></i> 查看笔记
-            </a>
-          </div>
-          
-          <!-- 统计数据 -->
-          <div class="grid grid-cols-3 gap-4 mt-12">
-            <div class="text-center">
-              <div class="text-3xl font-bold text-primary">0</div>
-              <div class="text-sm text-gray-500">项目应用</div>
-            </div>
-            <div class="text-center">
-              <div class="text-3xl font-bold text-primary">0</div>
-              <div class="text-sm text-gray-500">学习视频</div>
-            </div>
-            <div class="text-center">
-              <div class="text-3xl font-bold text-primary">0</div>
-              <div class="text-sm text-gray-500">笔记资源</div>
-            </div>
-          </div>
+  <section id="home" class="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          探索学习的<br/>
+          <span class="hero-title-highlight">无限可能</span>
+        </h1>
+        <p class="hero-desc">
+          汇集桌面应用、Web项目、学习视频、笔记和代码资源，助力你的学习之旅
+        </p>
+        <div class="hero-buttons">
+          <a href="#desktop-apps" class="btn btn-primary">
+            <i class="fa fa-rocket btn-icon"></i> 开始探索
+          </a>
+          <a href="#notes" class="btn btn-outline">
+            <i class="fa fa-book btn-icon"></i> 查看笔记
+          </a>
         </div>
         
-        <div class="md:w-1/2 scale-in">
-          <div class="relative">
-            <div class="absolute -inset-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl blur-xl opacity-70"></div>
-            <img src="https://picsum.photos/id/180/800/600" alt="学习资源展示" class="relative rounded-2xl shadow-2xl w-full h-auto object-cover">
-            <div class="absolute bottom-0 left-0 right-0 p-6 gradient-overlay rounded-b-2xl">
-              <div class="flex items-center space-x-2 text-white">
-                <span class="bg-primary/80 text-white text-xs px-2 py-1 rounded-full">热门推荐</span>
-                <span class="text-sm">最新学习资源集合</span>
-              </div>
-            </div>
+        <!-- 统计数据 -->
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">24+</div>
+            <div class="stat-label">项目应用</div>
           </div>
+          <div class="stat-item">
+            <div class="stat-number">48+</div>
+            <div class="stat-label">学习视频</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">72+</div>
+            <div class="stat-label">笔记资源</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-image">
+        <img src="https://picsum.photos/id/180/800/600" alt="学习资源展示">
+        <div class="hero-image-caption">
+          <span class="hero-image-tag tag">热门推荐</span>
+          <span>最新学习资源集合</span>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 桌面应用区域 -->
-  <section id="desktop-apps" class="py-16 md:py-24">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">桌面应用项目</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">精心开发的桌面应用程序，包括桌面宠物和智能体，提升学习效率和趣味性</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section id="desktop-apps" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">桌面应用项目</h2>
+        <p class="section-desc">精心开发的桌面应用程序，包括桌面宠物和智能体，提升学习效率和趣味性</p>
+        <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
         <!-- 桌面应用卡片 1 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/237/600/400" alt="桌面宠物" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4 bg-primary/90 text-white text-xs px-2 py-1 rounded-full">
-              热门
-            </div>
+        <div class="card card-hover desktop-app-card">
+          <div class="relative desktop-app-image">
+            <img src="https://picsum.photos/id/237/600/400" alt="桌面宠物">
+            <span class="tag tag-primary desktop-app-badge">热门</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">可爱桌面宠物</h3>
-            <p class="text-gray-600 mb-4">互动式桌面宠物程序，支持自定义形象、动作和交互方式，陪伴你的学习时光</p>
-            <div class="flex justify-between items-center">
-              <div class="flex items-center space-x-1 text-sm text-gray-500">
-                <span><i class="fa fa-calendar-o mr-1"></i> 2025-03</span>
-                <span><i class="fa fa-star text-yellow-400 mr-1"></i> 4.8</span>
-              </div>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
+          <div class="desktop-app-content">
+            <h3 class="desktop-app-title">可爱桌面宠物</h3>
+            <p class="desktop-app-desc">互动式桌面宠物程序，支持自定义形象、动作和交互方式，陪伴你的学习时光</p>
+            <div class="desktop-app-meta">
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-03</span>
+              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
+              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
                 查看详情 <i class="fa fa-arrow-right ml-1"></i>
               </a>
             </div>
@@ -219,19 +125,17 @@
         </div>
         
         <!-- 桌面应用卡片 2 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/48/600/400" alt="智能助手" class="w-full h-full object-cover">
+        <div class="card card-hover desktop-app-card">
+          <div class="relative desktop-app-image">
+            <img src="https://picsum.photos/id/48/600/400" alt="智能助手">
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">学习智能助手</h3>
-            <p class="text-gray-600 mb-4">本地运行的AI智能体，提供学习问答、知识点总结、代码解释等功能，无需网络</p>
-            <div class="flex justify-between items-center">
-              <div class="flex items-center space-x-1 text-sm text-gray-500">
-                <span><i class="fa fa-calendar-o mr-1"></i> 2025-05</span>
-                <span><i class="fa fa-star text-yellow-400 mr-1"></i> 4.7</span>
-              </div>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
+          <div class="desktop-app-content">
+            <h3 class="desktop-app-title">学习智能助手</h3>
+            <p class="desktop-app-desc">本地运行的AI智能体，提供学习问答、知识点总结、代码解释等功能，无需网络</p>
+            <div class="desktop-app-meta">
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-05</span>
+              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
+              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
                 查看详情 <i class="fa fa-arrow-right ml-1"></i>
               </a>
             </div>
@@ -239,22 +143,18 @@
         </div>
         
         <!-- 桌面应用卡片 3 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/160/600/400" alt="学习计时器" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4 bg-secondary/90 text-white text-xs px-2 py-1 rounded-full">
-              新品
-            </div>
+        <div class="card card-hover desktop-app-card">
+          <div class="relative desktop-app-image">
+            <img src="https://picsum.photos/id/160/600/400" alt="学习计时器">
+            <span class="tag tag-secondary desktop-app-badge">新品</span>
           </div>
-          <div class="p-6">
-            <h3 class="text-xl font-bold mb-2">专注学习计时器</h3>
-            <p class="text-gray-600 mb-4">结合番茄工作法的学习计时器，支持自定义时间、专注模式和休息提醒功能</p>
-            <div class="flex justify-between items-center">
-              <div class="flex items-center space-x-1 text-sm text-gray-500">
-                <span><i class="fa fa-calendar-o mr-1"></i> 2025-07</span>
-                <span><i class="fa fa-star text-yellow-400 mr-1"></i> 4.9</span>
-              </div>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
+          <div class="desktop-app-content">
+            <h3 class="desktop-app-title">专注学习计时器</h3>
+            <p class="desktop-app-desc">结合番茄工作法的学习计时器，支持自定义时间、专注模式和休息提醒功能</p>
+            <div class="desktop-app-meta">
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07</span>
+              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
+              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
                 查看详情 <i class="fa fa-arrow-right ml-1"></i>
               </a>
             </div>
@@ -265,102 +165,102 @@
   </section>
 
   <!-- Web应用区域 -->
-  <section id="web-apps" class="py-16 md:py-24 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">Web应用项目</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">基于Web技术开发的互动应用，包括小游戏和智能体，随时随地在线体验</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section id="web-apps" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Web应用项目</h2>
+        <p class="section-desc">基于Web技术开发的互动应用，包括小游戏和智能体，随时随地在线体验</p>
+        <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-1 grid-2-md gap-8">
         <!-- Web应用卡片 1 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
-          <div class="md:w-2/5 relative">
-            <img src="https://picsum.photos/id/96/600/800" alt="Web小游戏" class="w-full h-full object-cover">
+        <div class="card card-hover web-app-card">
+          <div class="web-app-image">
+            <img src="https://picsum.photos/id/96/600/800" alt="Web小游戏">
           </div>
-          <div class="md:w-3/5 p-6 flex flex-col justify-center">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full mr-2">游戏类</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-eye mr-1"></i> 1.2k+ 访问</span>
+          <div class="web-app-content">
+            <div class="web-app-meta">
+              <span class="tag tag-primary">游戏类</span>
+              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
             </div>
-            <h3 class="text-xl font-bold mb-2">学习型小游戏合集</h3>
-            <p class="text-gray-600 mb-4">包含记忆力训练、知识问答、编程练习等多款学习型小游戏，寓教于乐</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">HTML5</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">JavaScript</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Canvas</span>
+            <h3 class="web-app-title">学习型小游戏合集</h3>
+            <p class="web-app-desc">包含记忆力训练、知识问答、编程练习等多款学习型小游戏，寓教于乐</p>
+            <div class="web-app-tags">
+              <span class="tag">HTML5</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">Canvas</span>
             </div>
-            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <a href="#" class="web-app-link">
               在线体验 <i class="fa fa-external-link ml-1"></i>
             </a>
           </div>
         </div>
         
         <!-- Web应用卡片 2 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
-          <div class="md:w-2/5 relative">
-            <img src="https://picsum.photos/id/1/600/800" alt="Web智能体" class="w-full h-full object-cover">
+        <div class="card card-hover web-app-card">
+          <div class="web-app-image">
+            <img src="https://picsum.photos/id/1/600/800" alt="Web智能体">
           </div>
-          <div class="md:w-3/5 p-6 flex flex-col justify-center">
-            <div class="flex items-center mb-3">
-              <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full mr-2">AI类</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-eye mr-1"></i> 2.5k+ 访问</span>
+          <div class="web-app-content">
+            <div class="web-app-meta">
+              <span class="tag tag-accent">AI类</span>
+              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
             </div>
-            <h3 class="text-xl font-bold mb-2">Web端AI学习助手</h3>
-            <p class="text-gray-600 mb-4">基于大语言模型的Web智能体，提供学习指导、代码解释、文档生成等功能</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">React</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Node.js</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">AI API</span>
+            <h3 class="web-app-title">Web端AI学习助手</h3>
+            <p class="web-app-desc">基于大语言模型的Web智能体，提供学习指导、代码解释、文档生成等功能</p>
+            <div class="web-app-tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">AI API</span>
             </div>
-            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <a href="#" class="web-app-link">
               在线体验 <i class="fa fa-external-link ml-1"></i>
             </a>
           </div>
         </div>
         
         <!-- Web应用卡片 3 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
-          <div class="md:w-2/5 relative">
-            <img src="https://picsum.photos/id/119/600/800" alt="在线编辑器" class="w-full h-full object-cover">
+        <div class="card card-hover web-app-card">
+          <div class="web-app-image">
+            <img src="https://picsum.photos/id/119/600/800" alt="在线编辑器">
           </div>
-          <div class="md:w-3/5 p-6 flex flex-col justify-center">
-            <div class="flex items-center mb-3">
-              <span class="bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full mr-2">工具类</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-eye mr-1"></i> 3.1k+ 访问</span>
+          <div class="web-app-content">
+            <div class="web-app-meta">
+              <span class="tag tag-secondary">工具类</span>
+              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
             </div>
-            <h3 class="text-xl font-bold mb-2">在线代码编辑器</h3>
-            <p class="text-gray-600 mb-4">支持多语言的轻量级在线代码编辑器，实时预览效果，适合学习和快速原型开发</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Vue.js</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Monaco</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">WebAssembly</span>
+            <h3 class="web-app-title">在线代码编辑器</h3>
+            <p class="web-app-desc">支持多语言的轻量级在线代码编辑器，实时预览效果，适合学习和快速原型开发</p>
+            <div class="web-app-tags">
+              <span class="tag">Vue.js</span>
+              <span class="tag">Monaco</span>
+              <span class="tag">WebAssembly</span>
             </div>
-            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <a href="#" class="web-app-link">
               在线体验 <i class="fa fa-external-link ml-1"></i>
             </a>
           </div>
         </div>
         
         <!-- Web应用卡片 4 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden flex flex-col md:flex-row card-hover">
-          <div class="md:w-2/5 relative">
-            <img src="https://picsum.photos/id/20/600/800" alt="学习管理系统" class="w-full h-full object-cover">
+        <div class="card card-hover web-app-card">
+          <div class="web-app-image">
+            <img src="https://picsum.photos/id/20/600/800" alt="学习管理系统">
           </div>
-          <div class="md:w-3/5 p-6 flex flex-col justify-center">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full mr-2">系统类</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-eye mr-1"></i> 1.8k+ 访问</span>
+          <div class="web-app-content">
+            <div class="web-app-meta">
+              <span class="tag tag-primary">系统类</span>
+              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
             </div>
-            <h3 class="text-xl font-bold mb-2">个人学习管理系统</h3>
-            <p class="text-gray-600 mb-4">记录学习进度、管理学习计划、统计学习数据的Web应用，提升学习效率</p>
-            <div class="flex flex-wrap gap-2 mb-4">
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Next.js</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Tailwind CSS</span>
-              <span class="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded-full">Firebase</span>
+            <h3 class="web-app-title">个人学习管理系统</h3>
+            <p class="web-app-desc">记录学习进度、管理学习计划、统计学习数据的Web应用，提升学习效率</p>
+            <div class="web-app-tags">
+              <span class="tag">Next.js</span>
+              <span class="tag">Tailwind CSS</span>
+              <span class="tag">Firebase</span>
             </div>
-            <a href="#" class="inline-flex items-center text-primary hover:text-primary/80 font-medium transition-colors">
+            <a href="#" class="web-app-link">
               在线体验 <i class="fa fa-external-link ml-1"></i>
             </a>
           </div>
@@ -370,174 +270,150 @@
   </section>
 
   <!-- 视频资源区域 -->
-  <section id="videos" class="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-accent/5">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">视频学习资源</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">包含日常记录、学习教程和其他类型的视频资源，丰富你的学习方式</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section id="videos" class="section section-gradient">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">视频学习资源</h2>
+        <p class="section-desc">包含日常记录、学习教程和其他类型的视频资源，丰富你的学习方式</p>
+        <div class="section-divider"></div>
       </div>
       
       <!-- 视频分类标签 -->
-      <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <button class="video-tab active bg-primary text-white px-4 py-2 rounded-full text-sm font-medium transition-all">全部视频</button>
-        <button class="video-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">日常记录</button>
-        <button class="video-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">学习教程</button>
-        <button class="video-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">其他类型</button>
+      <div class="tabs">
+        <button class="tab-btn active">全部视频</button>
+        <button class="tab-btn">日常记录</button>
+        <button class="tab-btn">学习教程</button>
+        <button class="tab-btn">其他类型</button>
       </div>
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
         <!-- 视频卡片 1 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/21/600/400" alt="学习教程" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/21/600/400" alt="学习教程">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              15:42
-            </div>
+            <div class="video-duration">15:42</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">学习教程</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-primary">学习教程</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">JavaScript 入门到精通 - 基础语法详解</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">详细讲解JavaScript基础语法，包括变量、数据类型、运算符、条件语句等核心知识点</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">JavaScript 入门到精通 - 基础语法详解</h3>
+            <p class="video-desc">详细讲解JavaScript基础语法，包括变量、数据类型、运算符、条件语句等核心知识点</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-18</span>
             </div>
           </div>
         </div>
         
         <!-- 视频卡片 2 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/26/600/400" alt="日常记录" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/26/600/400" alt="日常记录">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              22:18
-            </div>
+            <div class="video-duration">22:18</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full">日常记录</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-secondary">日常记录</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">程序员的一天 - 如何高效学习新技能</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">记录程序员日常学习和工作的一天，分享高效学习方法和时间管理技巧</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">程序员的一天 - 如何高效学习新技能</h3>
+            <p class="video-desc">记录程序员日常学习和工作的一天，分享高效学习方法和时间管理技巧</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-03</span>
             </div>
           </div>
         </div>
         
         <!-- 视频卡片 3 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/42/600/400" alt="其他类型" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/42/600/400" alt="其他类型">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              18:05
-            </div>
+            <div class="video-duration">18:05</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">其他类型</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-accent">其他类型</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">技术分享 - AI在学习中的应用前景</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">探讨人工智能技术在教育和学习领域的应用场景和未来发展趋势</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">技术分享 - AI在学习中的应用前景</h3>
+            <p class="video-desc">探讨人工智能技术在教育和学习领域的应用场景和未来发展趋势</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-15</span>
             </div>
           </div>
         </div>
         
         <!-- 视频卡片 4 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/60/600/400" alt="学习教程" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/60/600/400" alt="学习教程">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              28:36
-            </div>
+            <div class="video-duration">28:36</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">学习教程</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-primary">学习教程</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">React 项目实战 - 构建个人博客系统</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">从零开始构建一个完整的React博客系统，学习组件设计、状态管理和API交互</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">React 项目实战 - 构建个人博客系统</h3>
+            <p class="video-desc">从零开始构建一个完整的React博客系统，学习组件设计、状态管理和API交互</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-30</span>
             </div>
           </div>
         </div>
         
         <!-- 视频卡片 5 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/99/600/400" alt="日常记录" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/99/600/400" alt="日常记录">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              14:22
-            </div>
+            <div class="video-duration">14:22</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full">日常记录</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-secondary">日常记录</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">周末学习Vlog - 数据分析入门</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">记录周末学习Python数据分析的全过程，包括环境搭建、库的使用和实战案例</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">周末学习Vlog - 数据分析入门</h3>
+            <p class="video-desc">记录周末学习Python数据分析的全过程，包括环境搭建、库的使用和实战案例</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-10</span>
             </div>
           </div>
         </div>
         
         <!-- 视频卡片 6 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="relative h-48">
-            <img src="https://picsum.photos/id/122/600/400" alt="其他类型" class="w-full h-full object-cover">
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div class="w-14 h-14 rounded-full bg-primary/80 flex items-center justify-center text-white cursor-pointer hover:bg-primary transition-colors">
-                <i class="fa fa-play text-xl"></i>
-              </div>
+        <div class="card card-hover video-card">
+          <div class="video-thumbnail">
+            <img src="https://picsum.photos/id/122/600/400" alt="其他类型">
+            <div class="video-play-btn">
+              <i class="fa fa-play"></i>
             </div>
-            <div class="absolute bottom-3 right-3 bg-black/70 text-white text-xs px-2 py-1 rounded">
-              32:14
-            </div>
+            <div class="video-duration">32:14</div>
           </div>
-          <div class="p-6">
-            <div class="flex items-center mb-3">
-              <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full">其他类型</span>
+          <div class="video-content">
+            <div class="video-meta-top">
+              <span class="tag tag-accent">其他类型</span>
             </div>
-            <h3 class="text-lg font-bold mb-2">开源项目贡献指南 - 如何参与开源社区</h3>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">详细介绍开源项目的贡献流程，从fork仓库到提交PR，帮助新手快速融入开源社区</p>
-            <div class="flex justify-between items-center text-sm text-gray-500">
-              <span><i class="fa fa-eye mr-1"></i> 0k 观看</span>
+            <h3 class="video-title">开源项目贡献指南 - 如何参与开源社区</h3>
+            <p class="video-desc">详细介绍开源项目的贡献流程，从fork仓库到提交PR，帮助新手快速融入开源社区</p>
+            <div class="video-meta">
+              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
               <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-05</span>
             </div>
           </div>
@@ -545,7 +421,7 @@
       </div>
       
       <div class="text-center mt-12">
-        <a href="#" class="inline-flex items-center bg-white hover:bg-gray-50 text-primary border border-primary font-medium px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg">
+        <a href="#" class="btn btn-outline">
           查看更多视频 <i class="fa fa-angle-right ml-2"></i>
         </a>
       </div>
@@ -553,169 +429,163 @@
   </section>
 
   <!-- 学习笔记区域 -->
-  <section id="notes" class="py-16 md:py-24 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">学习笔记资源</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">整理的各类学习笔记，涵盖编程开发、人工智能、设计等多个领域的知识点</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section id="notes" class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">学习笔记资源</h2>
+        <p class="section-desc">整理的各类学习笔记，涵盖编程开发、人工智能、设计等多个领域的知识点</p>
+        <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
         <!-- 笔记卡片 1 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex items-center mb-4">
-              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mr-3">
-                <i class="fa fa-code"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">前端开发笔记</h3>
-                <p class="text-gray-500 text-sm">HTML/CSS/JavaScript/Vue/React</p>
-              </div>
+        <div class="card card-hover notes-card">
+          <div class="notes-header">
+            <div class="notes-icon notes-icon-primary">
+              <i class="fa fa-code"></i>
             </div>
-            <div class="space-y-3 mb-6">
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> CSS Grid 布局完全指南
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> JavaScript 异步编程详解
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> React Hooks 实战教程
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> Vue 3 组合式API入门
-              </a>
+            <div>
+              <h3 class="notes-title">前端开发笔记</h3>
+              <p class="notes-subtitle">HTML/CSS/JavaScript/Vue/React</p>
             </div>
-            <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-              查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </div>
+          <div class="notes-list">
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> CSS Grid 布局完全指南
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> JavaScript 异步编程详解
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> React Hooks 实战教程
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> Vue 3 组合式API入门
             </a>
           </div>
+          <a href="#" class="notes-link">
+            查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </a>
         </div>
         
         <!-- 笔记卡片 2 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex items-center mb-4">
-              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent mr-3">
-                <i class="fa fa-brain"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">人工智能笔记</h3>
-                <p class="text-gray-500 text-sm">机器学习/深度学习/自然语言处理</p>
-              </div>
+        <div class="card card-hover notes-card">
+          <div class="notes-header">
+            <div class="notes-icon notes-icon-accent">
+              <i class="fa fa-brain"></i>
             </div>
-            <div class="space-y-3 mb-6">
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> 机器学习基础算法总结
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> 神经网络原理与实现
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> TensorFlow 实战教程
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> 大语言模型应用开发
-              </a>
+            <div>
+              <h3 class="notes-title">人工智能笔记</h3>
+              <p class="notes-subtitle">机器学习/深度学习/自然语言处理</p>
             </div>
-            <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-              查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </div>
+          <div class="notes-list">
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> 机器学习基础算法总结
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> 神经网络原理与实现
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> TensorFlow 实战教程
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> 大语言模型应用开发
             </a>
           </div>
+          <a href="#" class="notes-link">
+            查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </a>
         </div>
         
         <!-- 笔记卡片 3 -->
-        <div class="bg-light rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex items-center mb-4">
-              <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary mr-3">
-                <i class="fa fa-server"></i>
-              </div>
-              <div>
-                <h3 class="text-xl font-bold">后端开发笔记</h3>
-                <p class="text-gray-500 text-sm">Node.js/Java/Python/数据库</p>
-              </div>
+        <div class="card card-hover notes-card">
+          <div class="notes-header">
+            <div class="notes-icon notes-icon-secondary">
+              <i class="fa fa-server"></i>
             </div>
-            <div class="space-y-3 mb-6">
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> Node.js 后端开发实战
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> RESTful API 设计规范
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> 数据库优化技巧总结
-              </a>
-              <a href="#" class="block text-gray-700 hover:text-primary transition-colors">
-                <i class="fa fa-file-text-o mr-2"></i> 微服务架构入门指南
-              </a>
+            <div>
+              <h3 class="notes-title">后端开发笔记</h3>
+              <p class="notes-subtitle">Node.js/Java/Python/数据库</p>
             </div>
-            <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-              查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </div>
+          <div class="notes-list">
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> Node.js 后端开发实战
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> RESTful API 设计规范
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> 数据库优化技巧总结
+            </a>
+            <a href="#" class="notes-item">
+              <i class="fa fa-file-text-o mr-2"></i> 微服务架构入门指南
             </a>
           </div>
+          <a href="#" class="notes-link">
+            查看全部 <i class="fa fa-arrow-right ml-1"></i>
+          </a>
         </div>
       </div>
       
       <!-- 热门笔记 -->
       <div class="mt-16">
-        <h3 class="text-2xl font-bold mb-8 text-center">热门学习笔记</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <h3 class="section-title text-center">热门学习笔记</h3>
+        <div class="grid grid-1 grid-2-md grid-4-lg gap-6">
           <!-- 热门笔记 1 -->
-          <div class="bg-white rounded-xl shadow-md p-5 card-hover border border-gray-100">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full mr-2">前端</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2025-07-12</span>
+          <div class="card card-hover popular-note-card">
+            <div class="popular-note-meta">
+              <span class="tag tag-primary">前端</span>
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-12</span>
             </div>
-            <h4 class="font-bold text-lg mb-2 hover:text-primary transition-colors">现代CSS特性完全指南</h4>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">详细介绍CSS Grid、Flexbox、Custom Properties等现代CSS特性的使用方法和技巧</p>
-            <div class="flex justify-between items-center text-sm">
-              <span class="text-gray-500"><i class="fa fa-eye mr-1"></i> 0k 阅读</span>
-              <span class="text-gray-500"><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
+            <h4 class="popular-note-title">现代CSS特性完全指南</h4>
+            <p class="popular-note-desc">详细介绍CSS Grid、Flexbox、Custom Properties等现代CSS特性的使用方法和技巧</p>
+            <div class="popular-note-stats">
+              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
+              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
             </div>
           </div>
           
           <!-- 热门笔记 2 -->
-          <div class="bg-white rounded-xl shadow-md p-5 card-hover border border-gray-100">
-            <div class="flex items-center mb-3">
-              <span class="bg-accent/10 text-accent text-xs px-2 py-1 rounded-full mr-2">AI</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2025-07-08</span>
+          <div class="card card-hover popular-note-card">
+            <div class="popular-note-meta">
+              <span class="tag tag-accent">AI</span>
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-08</span>
             </div>
-            <h4 class="font-bold text-lg mb-2 hover:text-primary transition-colors">Python数据分析实战手册</h4>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">使用Pandas、NumPy、Matplotlib进行数据分析的实战教程，包含多个真实案例</p>
-            <div class="flex justify-between items-center text-sm">
-              <span class="text-gray-500"><i class="fa fa-eye mr-1"></i> 0k 阅读</span>
-              <span class="text-gray-500"><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
+            <h4 class="popular-note-title">Python数据分析实战手册</h4>
+            <p class="popular-note-desc">使用Pandas、NumPy、Matplotlib进行数据分析的实战教程，包含多个真实案例</p>
+            <div class="popular-note-stats">
+              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
+              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
             </div>
           </div>
           
           <!-- 热门笔记 3 -->
-          <div class="bg-white rounded-xl shadow-md p-5 card-hover border border-gray-100">
-            <div class="flex items-center mb-3">
-              <span class="bg-secondary/10 text-secondary text-xs px-2 py-1 rounded-full mr-2">后端</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2025-07-05</span>
+          <div class="card card-hover popular-note-card">
+            <div class="popular-note-meta">
+              <span class="tag tag-secondary">后端</span>
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-05</span>
             </div>
-            <h4 class="font-bold text-lg mb-2 hover:text-primary transition-colors">RESTful API 设计最佳实践</h4>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">总结RESTful API设计的最佳实践，包括URL设计、请求方法、状态码使用等内容</p>
-            <div class="flex justify-between items-center text-sm">
-              <span class="text-gray-500"><i class="fa fa-eye mr-1"></i> 0k 阅读</span>
-              <span class="text-gray-500"><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
+            <h4 class="popular-note-title">RESTful API 设计最佳实践</h4>
+            <p class="popular-note-desc">总结RESTful API设计的最佳实践，包括URL设计、请求方法、状态码使用等内容</p>
+            <div class="popular-note-stats">
+              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
+              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
             </div>
           </div>
           
           <!-- 热门笔记 4 -->
-          <div class="bg-white rounded-xl shadow-md p-5 card-hover border border-gray-100">
-            <div class="flex items-center mb-3">
-              <span class="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full mr-2">全栈</span>
-              <span class="text-sm text-gray-500"><i class="fa fa-calendar-o mr-1"></i> 2025-06-30</span>
+          <div class="card card-hover popular-note-card">
+            <div class="popular-note-meta">
+              <span class="tag tag-primary">全栈</span>
+              <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-30</span>
             </div>
-            <h4 class="font-bold text-lg mb-2 hover:text-primary transition-colors">Docker容器化部署指南</h4>
-            <p class="text-gray-600 text-sm mb-4 line-clamp-2">详细介绍Docker的使用方法，包括镜像构建、容器管理、多容器部署等核心知识点</p>
-            <div class="flex justify-between items-center text-sm">
-              <span class="text-gray-500"><i class="fa fa-eye mr-1"></i> 0k 阅读</span>
-              <span class="text-gray-500"><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
+            <h4 class="popular-note-title">Docker容器化部署指南</h4>
+            <p class="popular-note-desc">详细介绍Docker的使用方法，包括镜像构建、容器管理、多容器部署等核心知识点</p>
+            <div class="popular-note-stats">
+              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
+              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
             </div>
           </div>
         </div>
@@ -724,189 +594,177 @@
   </section>
 
   <!-- 代码库区域 -->
-  <section id="code-library" class="py-16 md:py-24 bg-gradient-to-br from-primary/5 to-accent/5">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">代码资源库</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">收集整理的各类实用代码片段和完整项目源码，方便学习和快速开发</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section id="code-library" class="section section-gradient">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">代码资源库</h2>
+        <p class="section-desc">收集整理的各类实用代码片段和完整项目源码，方便学习和快速开发</p>
+        <div class="section-divider"></div>
       </div>
       
       <!-- 代码分类 -->
-      <div class="flex flex-wrap justify-center gap-4 mb-10">
-        <button class="code-tab active bg-primary text-white px-4 py-2 rounded-full text-sm font-medium transition-all">全部代码</button>
-        <button class="code-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">前端代码</button>
-        <button class="code-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">后端代码</button>
-        <button class="code-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">AI代码</button>
-        <button class="code-tab bg-white text-dark hover:bg-primary/10 px-4 py-2 rounded-full text-sm font-medium transition-all">工具脚本</button>
+      <div class="tabs">
+        <button class="tab-btn active">全部代码</button>
+        <button class="tab-btn">前端代码</button>
+        <button class="tab-btn">后端代码</button>
+        <button class="tab-btn">AI代码</button>
+        <button class="tab-btn">工具脚本</button>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
         <!-- 代码库卡片 1 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">响应式导航栏组件</h3>
-                <p class="text-gray-500 text-sm">HTML/CSS/JavaScript</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                <i class="fa fa-html5"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">响应式导航栏组件</h3>
+              <p class="code-lang">HTML/CSS/JavaScript</p>
             </div>
-            <p class="text-gray-600 mb-4">支持桌面和移动端的响应式导航栏组件，包含下拉菜单、汉堡菜单等功能</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">导航栏</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">响应式</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">前端组件</span>
+            <div class="code-icon notes-icon-primary">
+              <i class="fa fa-html5"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 128</span>
-            </div>
+          </div>
+          <p class="code-desc">支持桌面和移动端的响应式导航栏组件，包含下拉菜单、汉堡菜单等功能</p>
+          <div class="code-tags">
+            <span class="tag">导航栏</span>
+            <span class="tag">响应式</span>
+            <span class="tag">前端组件</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
         
         <!-- 代码库卡片 2 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">Python数据分析工具集</h3>
-                <p class="text-gray-500 text-sm">Python/Pandas/Matplotlib</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-                <i class="fa fa-python"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">Python数据分析工具集</h3>
+              <p class="code-lang">Python/Pandas/Matplotlib</p>
             </div>
-            <p class="text-gray-600 mb-4">包含数据清洗、可视化、统计分析等常用功能的Python工具集，适用于数据分析场景</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Python</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">数据分析</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">可视化</span>
+            <div class="code-icon notes-icon-accent">
+              <i class="fa fa-python"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 256</span>
-            </div>
+          </div>
+          <p class="code-desc">包含数据清洗、可视化、统计分析等常用功能的Python工具集，适用于数据分析场景</p>
+          <div class="code-tags">
+            <span class="tag">Python</span>
+            <span class="tag">数据分析</span>
+            <span class="tag">可视化</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
         
         <!-- 代码库卡片 3 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">Node.js RESTful API模板</h3>
-                <p class="text-gray-500 text-sm">Node.js/Express/MongoDB</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
-                <i class="fa fa-nodejs"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">Node.js RESTful API模板</h3>
+              <p class="code-lang">Node.js/Express/MongoDB</p>
             </div>
-            <p class="text-gray-600 mb-4">完整的Node.js RESTful API项目模板，包含用户认证、权限控制、数据验证等功能</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Node.js</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">API</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">后端</span>
+            <div class="code-icon notes-icon-secondary">
+              <i class="fa fa-nodejs"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 312</span>
-            </div>
+          </div>
+          <p class="code-desc">完整的Node.js RESTful API项目模板，包含用户认证、权限控制、数据验证等功能</p>
+          <div class="code-tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">API</span>
+            <span class="tag">后端</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
         
         <!-- 代码库卡片 4 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">React组件库</h3>
-                <p class="text-gray-500 text-sm">React/TypeScript/Tailwind CSS</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                <i class="fa fa-react"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">React组件库</h3>
+              <p class="code-lang">React/TypeScript/Tailwind CSS</p>
             </div>
-            <p class="text-gray-600 mb-4">包含按钮、表单、卡片等常用UI组件的React组件库，支持自定义主题和样式</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">React</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">UI组件</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">TypeScript</span>
+            <div class="code-icon notes-icon-primary">
+              <i class="fa fa-react"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 425</span>
-            </div>
+          </div>
+          <p class="code-desc">包含按钮、表单、卡片等常用UI组件的React组件库，支持自定义主题和样式</p>
+          <div class="code-tags">
+            <span class="tag">React</span>
+            <span class="tag">UI组件</span>
+            <span class="tag">TypeScript</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
         
         <!-- 代码库卡片 5 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">机器学习算法实现</h3>
-                <p class="text-gray-500 text-sm">Python/Scikit-learn</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center text-accent">
-                <i class="fa fa-brain"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">机器学习算法实现</h3>
+              <p class="code-lang">Python/Scikit-learn</p>
             </div>
-            <p class="text-gray-600 mb-4">从零实现的机器学习算法集合，包括线性回归、决策树、神经网络等经典算法</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">机器学习</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">算法</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Python</span>
+            <div class="code-icon notes-icon-accent">
+              <i class="fa fa-brain"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 387</span>
-            </div>
+          </div>
+          <p class="code-desc">从零实现的机器学习算法集合，包括线性回归、决策树、神经网络等经典算法</p>
+          <div class="code-tags">
+            <span class="tag">机器学习</span>
+            <span class="tag">算法</span>
+            <span class="tag">Python</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
         
         <!-- 代码库卡片 6 -->
-        <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
-          <div class="p-6">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <h3 class="text-xl font-bold mb-1">自动化测试脚本集</h3>
-                <p class="text-gray-500 text-sm">Python/Selenium/Pytest</p>
-              </div>
-              <div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
-                <i class="fa fa-check-square-o"></i>
-              </div>
+        <div class="card card-hover code-card">
+          <div class="code-header">
+            <div>
+              <h3 class="code-title">自动化测试脚本集</h3>
+              <p class="code-lang">Python/Selenium/Pytest</p>
             </div>
-            <p class="text-gray-600 mb-4">Web自动化测试和接口自动化测试的脚本集合，支持测试报告生成和持续集成</p>
-            <div class="flex flex-wrap gap-2 mb-6">
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">自动化测试</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Selenium</span>
-              <span class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full">Pytest</span>
+            <div class="code-icon notes-icon-secondary">
+              <i class="fa fa-check-square-o"></i>
             </div>
-            <div class="flex justify-between items-center">
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors">
-                <i class="fa fa-github mr-1"></i> 查看源码
-              </a>
-              <span class="text-sm text-gray-500"><i class="fa fa-star mr-1"></i> 176</span>
-            </div>
+          </div>
+          <p class="code-desc">Web自动化测试和接口自动化测试的脚本集合，支持测试报告生成和持续集成</p>
+          <div class="code-tags">
+            <span class="tag">自动化测试</span>
+            <span class="tag">Selenium</span>
+            <span class="tag">Pytest</span>
+          </div>
+          <div class="code-footer">
+            <a href="#" class="code-link">
+              <i class="fa fa-github mr-1"></i> 查看源码
+            </a>
+            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
           </div>
         </div>
       </div>
       
       <div class="text-center mt-12">
-        <a href="#" class="inline-flex items-center bg-white hover:bg-gray-50 text-primary border border-primary font-medium px-6 py-3 rounded-lg transition-all shadow-md hover:shadow-lg">
+        <a href="#" class="btn btn-outline">
           浏览更多代码 <i class="fa fa-angle-right ml-2"></i>
         </a>
       </div>
@@ -914,27 +772,27 @@
   </section>
 
   <!-- 学习统计区域 -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="text-center mb-16">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4">学习数据统计</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">展示各类学习资源的访问和使用情况，帮助你了解学习进度</p>
-        <div class="w-20 h-1 bg-primary mx-auto mt-6 rounded-full"></div>
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">学习数据统计</h2>
+        <p class="section-desc">展示各类学习资源的访问和使用情况，帮助你了解学习进度</p>
+        <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="grid grid-1 grid-2-md gap-8">
         <!-- 图表 1 -->
-        <div class="bg-white rounded-xl shadow-md p-6">
+        <div class="card p-6">
           <h3 class="text-xl font-bold mb-6">资源访问分布</h3>
-          <div class="h-80">
+          <div class="chart-container">
             <canvas id="resourceChart"></canvas>
           </div>
         </div>
         
         <!-- 图表 2 -->
-        <div class="bg-white rounded-xl shadow-md p-6">
+        <div class="card p-6">
           <h3 class="text-xl font-bold mb-6">月度学习时间</h3>
-          <div class="h-80">
+          <div class="chart-container">
             <canvas id="learningTimeChart"></canvas>
           </div>
         </div>
@@ -943,93 +801,228 @@
   </section>
 
   <!-- 订阅区域 -->
-  <section class="py-16 md:py-24 bg-gradient-to-r from-primary to-accent text-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold mb-4 text-shadow">获取最新学习资源</h2>
-        <p class="text-white/80 text-lg mb-8">订阅我们的通讯，第一时间获取最新的学习资源、项目更新和技术教程</p>
-        <form class="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-          <input type="email" placeholder="输入你的邮箱地址" class="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-white/50 text-dark">
-          <button type="submit" class="bg-white text-primary hover:bg-white/90 font-medium px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-white/30">
-            立即订阅
-          </button>
-        </form>
-        <p class="text-white/60 text-sm mt-4">我们尊重你的隐私，不会向第三方分享你的信息</p>
-      </div>
+  <section class="subscribe">
+    <div class="container subscribe-container">
+      <h2 class="subscribe-title">获取最新学习资源</h2>
+      <p class="subscribe-desc">订阅我们的通讯，第一时间获取最新的学习资源、项目更新和技术教程</p>
+      <form class="subscribe-form">
+        <input type="email" placeholder="输入你的邮箱地址" class="subscribe-input">
+        <button type="submit" class="subscribe-btn">
+          立即订阅
+        </button>
+      </form>
+      <p class="subscribe-privacy">我们尊重你的隐私，不会向第三方分享你的信息</p>
     </div>
   </section>
 
   <!-- 页脚 -->
-  <footer class="bg-dark text-white pt-16 pb-8">
-    <div class="container mx-auto px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-        <div>
-          <div class="flex items-center space-x-2 mb-6">
-            <i class="fa fa-graduation-cap text-primary text-2xl"></i>
-            <span class="text-xl font-bold">LearnHub</span>
-          </div>
-          <p class="text-gray-400 mb-6">
-            专注于提供高质量的学习资源和项目展示平台，助力你的学习和成长之旅
-          </p>
-          <div class="flex space-x-4">
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <i class="fa fa-github"></i>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <i class="fa fa-twitter"></i>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <i class="fa fa-linkedin"></i>
-            </a>
-            <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
-              <i class="fa fa-youtube-play"></i>
-            </a>
-          </div>
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-column">
+        <div class="footer-logo">
+          <i class="fa fa-graduation-cap footer-logo-icon"></i>
+          <span>LearnHub</span>
         </div>
-        
-        <div>
-          <h3 class="text-lg font-bold mb-6">快速链接</h3>
-          <ul class="space-y-3">
-            <li><a href="#home" class="text-gray-400 hover:text-primary transition-colors">首页</a></li>
-            <li><a href="#desktop-apps" class="text-gray-400 hover:text-primary transition-colors">桌面应用</a></li>
-            <li><a href="#web-apps" class="text-gray-400 hover:text-primary transition-colors">Web应用</a></li>
-            <li><a href="#videos" class="text-gray-400 hover:text-primary transition-colors">视频资源</a></li>
-            <li><a href="#notes" class="text-gray-400 hover:text-primary transition-colors">学习笔记</a></li>
-            <li><a href="#code-library" class="text-gray-400 hover:text-primary transition-colors">代码库</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 class="text-lg font-bold mb-6">资源分类</h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">前端开发</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">后端开发</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">人工智能</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">移动开发</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">数据分析</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">云计算</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h3 class="text-lg font-bold mb-6">联系我们</h3>
-          <ul class="space-y-3">
-            <li class="flex items-start">
-              <i class="fa fa-envelope-o text-primary mt-1 mr-3"></i>
-              <span class="text-gray-400">contact@暂时没有</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
-              <span class="text-gray-400">黄山学院5栋618</span>
-            </li>
-            <li class="flex items-start">
-              <i class="fa fa-phone text-primary mt-1 mr-3"></i>
-              <span class="text-gray-400">+86 暂时没有</span>
-            </li>
-          </ul>
+        <p class="footer-desc">
+          专注于提供高质量的学习资源和项目展示平台，助力你的学习和成长之旅
+        </p>
+        <div class="footer-social">
+          <a href="#" class="social-link">
+            <i class="fa fa-github"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fa fa-twitter"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fa fa-linkedin"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i class="fa fa-youtube-play"></i>
+          </a>
         </div>
       </div>
       
-      <div class="border-t border-gray-800 pt-8">
-        <div class="flex flex-col md:flex-row justify-between items-center">
-          <p class
+      <div class="footer-column">
+        <h3 class="footer-title">快速链接</h3>
+        <ul class="footer-links">
+          <li><a href="#home" class="footer-link">首页</a></li>
+          <li><a href="#desktop-apps" class="footer-link">桌面应用</a></li>
+          <li><a href="#web-apps" class="footer-link">Web应用</a></li>
+          <li><a href="#videos" class="footer-link">视频资源</a></li>
+          <li><a href="#notes" class="footer-link">学习笔记</a></li>
+          <li><a href="#code-library" class="footer-link">代码库</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">资源分类</h3>
+        <ul class="footer-links">
+          <li><a href="#" class="footer-link">前端开发</a></li>
+          <li><a href="#" class="footer-link">后端开发</a></li>
+          <li><a href="#" class="footer-link">人工智能</a></li>
+          <li><a href="#" class="footer-link">移动开发</a></li>
+          <li><a href="#" class="footer-link">数据分析</a></li>
+          <li><a href="#" class="footer-link">云计算</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-column">
+        <h3 class="footer-title">联系我们</h3>
+        <ul class="footer-contact">
+          <li class="contact-item">
+            <i class="fa fa-envelope-o contact-icon"></i>
+            <span>邮箱暂无</span>
+          </li>
+          <li class="contact-item">
+            <i class="fa fa-map-marker contact-icon"></i>
+            <span>黄山学院5栋618</span>
+          </li>
+          <li class="contact-item">
+            <i class="fa fa-phone contact-icon"></i>
+            <span>电话暂无</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="container footer-bottom">
+      <p class="footer-copyright">© 2025 LearnHub. 保留所有权利。</p>
+      <div class="footer-bottom-links">
+        <a href="#" class="footer-bottom-link">隐私政策</a>
+        <a href="#" class="footer-bottom-link">使用条款</a>
+        <a href="#" class="footer-bottom-link">帮助中心</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript 脚本 -->
+  <script>
+    // 导航栏滚动效果
+    window.addEventListener('scroll', function() {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    });
+
+    // 移动端菜单切换
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    menuBtn.addEventListener('click', function() {
+      mobileMenu.classList.toggle('active');
+    });
+
+    // 标签切换功能
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        // 移除所有活跃状态
+        tabBtns.forEach(b => b.classList.remove('active'));
+        // 添加当前活跃状态
+        this.classList.add('active');
+      });
+    });
+
+    // 图表初始化
+    window.addEventListener('load', function() {
+      // 资源访问分布图表
+      const resourceCtx = document.getElementById('resourceChart').getContext('2d');
+      new Chart(resourceCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['桌面应用', 'Web应用', '视频资源', '学习笔记', '代码库'],
+          datasets: [{
+            data: [15, 25, 30, 20, 10],
+            backgroundColor: [
+              '#165DFF',
+              '#36CFC9',
+              '#722ED1',
+              '#FF7D00',
+              '#00B42A'
+            ],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                padding: 20,
+                font: {
+                  size: 12
+                }
+              }
+            }
+          },
+          cutout: '65%'
+        }
+      });
+
+      // 月度学习时间图表
+      const timeCtx = document.getElementById('learningTimeChart').getContext('2d');
+      new Chart(timeCtx, {
+        type: 'bar',
+        data: {
+          labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
+          datasets: [{
+            label: '学习时长(小时)',
+            data: [45, 62, 78, 56, 92, 110],
+            backgroundColor: '#165DFF',
+            borderRadius: 6,
+            barThickness: 30
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: {
+                drawBorder: false
+              }
+            },
+            x: {
+              grid: {
+                display: false
+              }
+            }
+          }
+        }
+      });
+    });
+
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        
+        if (targetElement) {
+          // 关闭移动端菜单
+          mobileMenu.classList.remove('active');
+          
+          // 滚动到目标位置
+          window.scrollTo({
+            top: targetElement.offsetTop - 80,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
