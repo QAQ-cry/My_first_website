@@ -68,16 +68,17 @@ const dom = {
   },
   menuBtn: document.getElementById('menuBtn'),
   mobileMenu: document.getElementById('mobileMenu'),
-  navbar: document.getElementById('navbar')
+  navbar: document.getElementById('navbar'),
+  subscribeForm: document.querySelector('.subscribe-form')
 };
 
-// 初始化应用
+// 初始化应用（入口函数）
 function initApp() {
   loadData();       // 加载本地存储数据
   renderLists();    // 渲染列表树
   renderAllResources(); // 渲染所有资源
   initCharts();     // 初始化图表
-  bindEvents();     // 绑定所有事件
+  bindEvents();     // 绑定所有事件（关键！之前缺失）
 }
 
 // 加载本地存储数据
@@ -86,7 +87,8 @@ function loadData() {
   if (saved) {
     try {
       appData = JSON.parse(saved);
-    } catch (e) {
+    }
+    catch (e) {
       console.error('数据加载失败，使用默认数据', e);
       saveData(); // 重置数据
     }
@@ -283,7 +285,8 @@ function saveList() {
   const index = appData.lists.findIndex(item => item.id === id);
   if (index !== -1) {
     appData.lists[index] = listData;
-  } else {
+  }
+  else {
     appData.lists.push(listData);
   }
   
@@ -509,7 +512,8 @@ function saveResource() {
   const index = appData.resources.findIndex(r => r.id === id);
   if (index !== -1) {
     appData.resources[index] = resourceData;
-  } else {
+  }
+  else {
     appData.resources.push(resourceData);
     // 更新统计
     appData.stats.resourceCounts[list.type]++;
@@ -626,4 +630,229 @@ function renderComments(resourceId) {
 }
 
 function submitComment() {
-  const resource
+  const resourceId = dom.resourceId.value;
+  const content = dom.commentContent.value.trim();
+  
+  if (!content) {
+    alert('评论内容不能为空！');
+    return;
+  }
+  
+  // 创建评论数据
+  const comment = {
+    id: generateId(),
+    resourceId,
+    content,
+    createTime: new Date().getTime()
+  };
+  
+  // 添加到评论列表
+  appData.comments.push(comment);
+  
+  // 更新资源评论数
+  const resource = appData.resources.find(r => r.id === resourceId);
+  if (resource) {
+    resource.commentCount++;
+    appData.stats.comments++;
+  }
+  
+  saveData();
+  renderComments(resourceId);
+  dom.commentContent.value = '';
+  
+  // 局部更新资源卡片的评论数
+  const card = document.querySelector(`.resource-card[data-id="${resourceId}"]`);
+  if (card) {
+    card.querySelector('.stat-item:nth-child(3) span:last-child').textContent = `${resource.commentCount} 评论`;
+  }
+}
+
+function deleteComment(commentId) {
+  if (!confirm('确定删除该评论？')) return;
+  
+  // 找到评论并获取资源ID
+  const commentIndex = appData.comments.findIndex(cmt => cmt.id === commentId);
+  if (commentIndex === -1) return;
+  
+  const resourceId = appData.comments[commentIndex].resourceId;
+  
+  // 更新资源评论数
+  const resource = appData.resources.find(r => r.id === resourceId);
+  if (resource) {
+    resource.commentCount--;
+    appData.stats.comments--;
+  }
+  
+  // 删除评论
+  appData.comments.splice(commentIndex, 1);
+  
+  saveData();
+  renderComments(resourceId);
+  
+  // 局部更新资源卡片的评论数
+  const card = document.querySelector(`.resource-card[data-id="${resourceId}"]`);
+  if (card) {
+    card.querySelector('.stat-item:nth-child(3) span:last-child').textContent = `${resource.commentCount} 评论`;
+  }
+}
+
+// ==========================================
+// 图表相关功能
+// ==========================================
+let resourceChartInstance = null;
+let resourceAddChartInstance = null;
+
+function initCharts() {
+  // 销毁已有图表（避免重复创建）
+  if (resourceChartInstance) resourceChartInstance.destroy();
+  if (resourceAddChartInstance) resourceAddChartInstance.destroy();
+  
+  // 资源访问分布图表（饼图）
+  const resourceCtx = dom.charts.resource.getContext('2d');
+  resourceChartInstance = new Chart(resourceCtx, {
+    type: 'pie',
+    data: {
+      labels: ['桌面应用', 'Web应用', '视频资源', '学习笔记', '代码库'],
+      datasets: [{
+        data: [
+          appData.stats.resourceCounts['desktop-app'],
+          appData.stats.resourceCounts['web-app'],
+          appData.stats.resourceCounts['video'],
+          appData.stats.resourceCounts['note'],
+          appData.stats.resourceCounts['code']
+        ],
+        backgroundColor: [
+          '#165DFF',
+          '#36CFC9',
+          '#722ED1',
+          '#FFC53D',
+          '#F53F3F'
+        ],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            padding: 20,
+            font: {
+              size: 12
+            }
+          }
+        }
+      }
+    }
+  });
+  
+  // 月度资源添加量图表（柱状图）
+  const addCtx = dom.charts.add.getContext('2d');
+  resourceAddChartInstance = new Chart(addCtx, {
+    type: 'bar',
+    data: {
+      labels: appData.stats.monthlyAdds.map(item => item.month),
+      datasets: [{
+        label: '资源添加量',
+        data: appData.stats.monthlyAdds.map(item => item.count),
+        backgroundColor: '#165DFF',
+        borderRadius: 6,
+        barPercentage: 0.6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: 'rgba(0, 0, 0, 0.05)'
+          },
+          ticks: {
+            precision: 0
+          }
+        },
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      }
+    }
+  });
+}
+
+// ==========================================
+// 事件绑定（关键！之前缺失导致无响应）
+// ==========================================
+function bindEvents() {
+  // 1. 创建根列表按钮
+  dom.createRootListBtn.addEventListener('click', () => openListModal('create'));
+  
+  // 2. 列表模态框相关
+  dom.submitListBtn.addEventListener('click', saveList);
+  dom.cancelModalBtn.addEventListener('click', () => dom.listModal.style.display = 'none');
+  dom.modalClose.forEach(btn => {
+    btn.addEventListener('click', () => {
+      dom.listModal.style.display = 'none';
+      dom.resourceModal.style.display = 'none';
+      dom.commentModal.style.display = 'none';
+    });
+  });
+  
+  // 3. 资源模态框相关
+  dom.submitResourceBtn.addEventListener('click', saveResource);
+  dom.cancelResourceModalBtn.addEventListener('click', () => dom.resourceModal.style.display = 'none');
+  
+  // 4. 评论模态框相关
+  dom.submitCommentBtn.addEventListener('click', submitComment);
+  dom.cancelCommentModalBtn.addEventListener('click', () => dom.commentModal.style.display = 'none');
+  
+  // 5. 移动端菜单
+  dom.menuBtn.addEventListener('click', () => {
+    dom.mobileMenu.classList.toggle('active');
+  });
+  
+  // 6. 点击模态框外部关闭
+  window.addEventListener('click', (e) => {
+    if (e.target === dom.listModal) dom.listModal.style.display = 'none';
+    if (e.target === dom.resourceModal) dom.resourceModal.style.display = 'none';
+    if (e.target === dom.commentModal) dom.commentModal.style.display = 'none';
+  });
+  
+  // 7. 导航栏滚动效果
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      dom.navbar.classList.add('nav-scrolled');
+    }
+    else {
+      dom.navbar.classList.remove('nav-scrolled');
+    }
+  });
+  
+  // 8. 订阅表单提交
+  dom.subscribeForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const emailInput = dom.subscribeForm.querySelector('input[type="email"]');
+    const email = emailInput.value.trim();
+    
+    if (!email || !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+      alert('请输入有效的邮箱地址！');
+      return;
+    }
+    
+    alert('订阅成功！我们会及时发送更新通知～');
+    emailInput.value = '';
+  });
+}
+
+// 页面加载完成后初始化应用
+document.addEventListener('DOMContentLoaded', initApp);
