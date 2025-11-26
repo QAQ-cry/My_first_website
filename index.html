@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>学习资源展示平台</title>
-  <!-- 引入外部资源 -->
+  <title>学习资源管理平台</title>
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-  <!-- 引入自定义CSS -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -53,43 +51,32 @@
     <div class="container hero-container">
       <div class="hero-content">
         <h1 class="hero-title">
-          探索学习的<br/>
-          <span class="hero-title-highlight">无限可能</span>
+          自定义你的<br/>
+          <span class="hero-title-highlight">学习资源库</span>
         </h1>
         <p class="hero-desc">
-          汇集桌面应用、Web项目、学习视频、笔记和代码资源，助力你的学习之旅
+          创建列表、分组管理、记录真实数据，打造专属你的学习资源管理平台
         </p>
         <div class="hero-buttons">
-          <a href="#desktop-apps" class="btn btn-primary">
-            <i class="fa fa-rocket btn-icon"></i> 开始探索
-          </a>
-          <a href="#notes" class="btn btn-outline">
-            <i class="fa fa-book btn-icon"></i> 查看笔记
-          </a>
+          <button id="createRootListBtn" class="btn btn-primary">
+            <i class="fa fa-plus btn-icon"></i> 创建根列表
+          </button>
         </div>
         
-        <!-- 统计数据 -->
-        <div class="hero-stats">
-          <div class="stat-item">
-            <div class="stat-number">24+</div>
-            <div class="stat-label">项目应用</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">48+</div>
-            <div class="stat-label">学习视频</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-number">72+</div>
-            <div class="stat-label">笔记资源</div>
+        <!-- 用户自定义列表区域 -->
+        <div id="userListsContainer" class="user-lists-container mt-8">
+          <h3 class="user-lists-title">我的资源列表</h3>
+          <div id="listsTree" class="lists-tree">
+            <!-- 列表树由JS动态生成 -->
           </div>
         </div>
       </div>
       
       <div class="hero-image">
-        <img src="https://picsum.photos/id/180/800/600" alt="学习资源展示">
+        <img src="https://picsum.photos/id/180/800/600" alt="学习资源管理">
         <div class="hero-image-caption">
-          <span class="hero-image-tag tag">热门推荐</span>
-          <span>最新学习资源集合</span>
+          <span class="hero-image-tag tag">自定义管理</span>
+          <span>创建列表 · 分组资源 · 记录数据</span>
         </div>
       </div>
     </div>
@@ -100,65 +87,15 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">桌面应用项目</h2>
-        <p class="section-desc">精心开发的桌面应用程序，包括桌面宠物和智能体，提升学习效率和趣味性</p>
+        <p class="section-desc">创建列表管理你的桌面应用，记录真实上传时间、浏览量和点赞数</p>
         <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
-        <!-- 桌面应用卡片 1 -->
-        <div class="card card-hover desktop-app-card">
-          <div class="relative desktop-app-image">
-            <img src="https://picsum.photos/id/237/600/400" alt="桌面宠物">
-            <span class="tag tag-primary desktop-app-badge">热门</span>
-          </div>
-          <div class="desktop-app-content">
-            <h3 class="desktop-app-title">可爱桌面宠物</h3>
-            <p class="desktop-app-desc">互动式桌面宠物程序，支持自定义形象、动作和交互方式，陪伴你的学习时光</p>
-            <div class="desktop-app-meta">
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-03</span>
-              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
-                查看详情 <i class="fa fa-arrow-right ml-1"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 桌面应用卡片 2 -->
-        <div class="card card-hover desktop-app-card">
-          <div class="relative desktop-app-image">
-            <img src="https://picsum.photos/id/48/600/400" alt="智能助手">
-          </div>
-          <div class="desktop-app-content">
-            <h3 class="desktop-app-title">学习智能助手</h3>
-            <p class="desktop-app-desc">本地运行的AI智能体，提供学习问答、知识点总结、代码解释等功能，无需网络</p>
-            <div class="desktop-app-meta">
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-05</span>
-              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
-                查看详情 <i class="fa fa-arrow-right ml-1"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 桌面应用卡片 3 -->
-        <div class="card card-hover desktop-app-card">
-          <div class="relative desktop-app-image">
-            <img src="https://picsum.photos/id/160/600/400" alt="学习计时器">
-            <span class="tag tag-secondary desktop-app-badge">新品</span>
-          </div>
-          <div class="desktop-app-content">
-            <h3 class="desktop-app-title">专注学习计时器</h3>
-            <p class="desktop-app-desc">结合番茄工作法的学习计时器，支持自定义时间、专注模式和休息提醒功能</p>
-            <div class="desktop-app-meta">
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07</span>
-              <span class="desktop-app-rating"><i class="fa fa-star mr-1"></i> 0</span>
-              <a href="#" class="text-primary hover:text-primary/80 font-medium flex items-center transition-colors ml-auto">
-                查看详情 <i class="fa fa-arrow-right ml-1"></i>
-              </a>
-            </div>
-          </div>
+      <!-- 应用列表（初始为空，由用户添加） -->
+      <div id="desktopAppsContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+        <div class="empty-state">
+          <i class="fa fa-folder-open-o empty-icon"></i>
+          <p class="empty-text">暂无应用数据，可通过左侧列表添加</p>
         </div>
       </div>
     </div>
@@ -169,101 +106,15 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">Web应用项目</h2>
-        <p class="section-desc">基于Web技术开发的互动应用，包括小游戏和智能体，随时随地在线体验</p>
+        <p class="section-desc">创建列表管理你的Web应用，记录真实数据和用户评论</p>
         <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-1 grid-2-md gap-8">
-        <!-- Web应用卡片 1 -->
-        <div class="card card-hover web-app-card">
-          <div class="web-app-image">
-            <img src="https://picsum.photos/id/96/600/800" alt="Web小游戏">
-          </div>
-          <div class="web-app-content">
-            <div class="web-app-meta">
-              <span class="tag tag-primary">游戏类</span>
-              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
-            </div>
-            <h3 class="web-app-title">学习型小游戏合集</h3>
-            <p class="web-app-desc">包含记忆力训练、知识问答、编程练习等多款学习型小游戏，寓教于乐</p>
-            <div class="web-app-tags">
-              <span class="tag">HTML5</span>
-              <span class="tag">JavaScript</span>
-              <span class="tag">Canvas</span>
-            </div>
-            <a href="#" class="web-app-link">
-              在线体验 <i class="fa fa-external-link ml-1"></i>
-            </a>
-          </div>
-        </div>
-        
-        <!-- Web应用卡片 2 -->
-        <div class="card card-hover web-app-card">
-          <div class="web-app-image">
-            <img src="https://picsum.photos/id/1/600/800" alt="Web智能体">
-          </div>
-          <div class="web-app-content">
-            <div class="web-app-meta">
-              <span class="tag tag-accent">AI类</span>
-              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
-            </div>
-            <h3 class="web-app-title">Web端AI学习助手</h3>
-            <p class="web-app-desc">基于大语言模型的Web智能体，提供学习指导、代码解释、文档生成等功能</p>
-            <div class="web-app-tags">
-              <span class="tag">React</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">AI API</span>
-            </div>
-            <a href="#" class="web-app-link">
-              在线体验 <i class="fa fa-external-link ml-1"></i>
-            </a>
-          </div>
-        </div>
-        
-        <!-- Web应用卡片 3 -->
-        <div class="card card-hover web-app-card">
-          <div class="web-app-image">
-            <img src="https://picsum.photos/id/119/600/800" alt="在线编辑器">
-          </div>
-          <div class="web-app-content">
-            <div class="web-app-meta">
-              <span class="tag tag-secondary">工具类</span>
-              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
-            </div>
-            <h3 class="web-app-title">在线代码编辑器</h3>
-            <p class="web-app-desc">支持多语言的轻量级在线代码编辑器，实时预览效果，适合学习和快速原型开发</p>
-            <div class="web-app-tags">
-              <span class="tag">Vue.js</span>
-              <span class="tag">Monaco</span>
-              <span class="tag">WebAssembly</span>
-            </div>
-            <a href="#" class="web-app-link">
-              在线体验 <i class="fa fa-external-link ml-1"></i>
-            </a>
-          </div>
-        </div>
-        
-        <!-- Web应用卡片 4 -->
-        <div class="card card-hover web-app-card">
-          <div class="web-app-image">
-            <img src="https://picsum.photos/id/20/600/800" alt="学习管理系统">
-          </div>
-          <div class="web-app-content">
-            <div class="web-app-meta">
-              <span class="tag tag-primary">系统类</span>
-              <span><i class="fa fa-eye mr-1"></i> 0 访问</span>
-            </div>
-            <h3 class="web-app-title">个人学习管理系统</h3>
-            <p class="web-app-desc">记录学习进度、管理学习计划、统计学习数据的Web应用，提升学习效率</p>
-            <div class="web-app-tags">
-              <span class="tag">Next.js</span>
-              <span class="tag">Tailwind CSS</span>
-              <span class="tag">Firebase</span>
-            </div>
-            <a href="#" class="web-app-link">
-              在线体验 <i class="fa fa-external-link ml-1"></i>
-            </a>
-          </div>
+      <!-- Web应用列表（初始为空） -->
+      <div id="webAppsContainer" class="grid grid-1 grid-2-md gap-8">
+        <div class="empty-state">
+          <i class="fa fa-globe empty-icon"></i>
+          <p class="empty-text">暂无Web应用数据，可通过左侧列表添加</p>
         </div>
       </div>
     </div>
@@ -274,156 +125,16 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">视频学习资源</h2>
-        <p class="section-desc">包含日常记录、学习教程和其他类型的视频资源，丰富你的学习方式</p>
+        <p class="section-desc">创建列表管理视频，记录观看量、点赞数和用户评论</p>
         <div class="section-divider"></div>
       </div>
       
-      <!-- 视频分类标签 -->
-      <div class="tabs">
-        <button class="tab-btn active">全部视频</button>
-        <button class="tab-btn">日常记录</button>
-        <button class="tab-btn">学习教程</button>
-        <button class="tab-btn">其他类型</button>
-      </div>
-      
-      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
-        <!-- 视频卡片 1 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/21/600/400" alt="学习教程">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">15:42</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-primary">学习教程</span>
-            </div>
-            <h3 class="video-title">JavaScript 入门到精通 - 基础语法详解</h3>
-            <p class="video-desc">详细讲解JavaScript基础语法，包括变量、数据类型、运算符、条件语句等核心知识点</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-18</span>
-            </div>
-          </div>
+      <!-- 视频列表（初始为空） -->
+      <div id="videosContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+        <div class="empty-state">
+          <i class="fa fa-play-circle-o empty-icon"></i>
+          <p class="empty-text">暂无视频资源，可通过左侧列表添加</p>
         </div>
-        
-        <!-- 视频卡片 2 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/26/600/400" alt="日常记录">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">22:18</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-secondary">日常记录</span>
-            </div>
-            <h3 class="video-title">程序员的一天 - 如何高效学习新技能</h3>
-            <p class="video-desc">记录程序员日常学习和工作的一天，分享高效学习方法和时间管理技巧</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-03</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 视频卡片 3 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/42/600/400" alt="其他类型">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">18:05</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-accent">其他类型</span>
-            </div>
-            <h3 class="video-title">技术分享 - AI在学习中的应用前景</h3>
-            <p class="video-desc">探讨人工智能技术在教育和学习领域的应用场景和未来发展趋势</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-15</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 视频卡片 4 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/60/600/400" alt="学习教程">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">28:36</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-primary">学习教程</span>
-            </div>
-            <h3 class="video-title">React 项目实战 - 构建个人博客系统</h3>
-            <p class="video-desc">从零开始构建一个完整的React博客系统，学习组件设计、状态管理和API交互</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-30</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 视频卡片 5 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/99/600/400" alt="日常记录">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">14:22</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-secondary">日常记录</span>
-            </div>
-            <h3 class="video-title">周末学习Vlog - 数据分析入门</h3>
-            <p class="video-desc">记录周末学习Python数据分析的全过程，包括环境搭建、库的使用和实战案例</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-10</span>
-            </div>
-          </div>
-        </div>
-        
-        <!-- 视频卡片 6 -->
-        <div class="card card-hover video-card">
-          <div class="video-thumbnail">
-            <img src="https://picsum.photos/id/122/600/400" alt="其他类型">
-            <div class="video-play-btn">
-              <i class="fa fa-play"></i>
-            </div>
-            <div class="video-duration">32:14</div>
-          </div>
-          <div class="video-content">
-            <div class="video-meta-top">
-              <span class="tag tag-accent">其他类型</span>
-            </div>
-            <h3 class="video-title">开源项目贡献指南 - 如何参与开源社区</h3>
-            <p class="video-desc">详细介绍开源项目的贡献流程，从fork仓库到提交PR，帮助新手快速融入开源社区</p>
-            <div class="video-meta">
-              <span><i class="fa fa-eye mr-1"></i> 0 观看</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-05</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="text-center mt-12">
-        <a href="#" class="btn btn-outline">
-          查看更多视频 <i class="fa fa-angle-right ml-2"></i>
-        </a>
       </div>
     </div>
   </section>
@@ -433,161 +144,15 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">学习笔记资源</h2>
-        <p class="section-desc">整理的各类学习笔记，涵盖编程开发、人工智能、设计等多个领域的知识点</p>
+        <p class="section-desc">创建列表分组管理笔记，记录阅读量和修改时间</p>
         <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
-        <!-- 笔记卡片 1 -->
-        <div class="card card-hover notes-card">
-          <div class="notes-header">
-            <div class="notes-icon notes-icon-primary">
-              <i class="fa fa-code"></i>
-            </div>
-            <div>
-              <h3 class="notes-title">前端开发笔记</h3>
-              <p class="notes-subtitle">HTML/CSS/JavaScript/Vue/React</p>
-            </div>
-          </div>
-          <div class="notes-list">
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> CSS Grid 布局完全指南
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> JavaScript 异步编程详解
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> React Hooks 实战教程
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> Vue 3 组合式API入门
-            </a>
-          </div>
-          <a href="#" class="notes-link">
-            查看全部 <i class="fa fa-arrow-right ml-1"></i>
-          </a>
-        </div>
-        
-        <!-- 笔记卡片 2 -->
-        <div class="card card-hover notes-card">
-          <div class="notes-header">
-            <div class="notes-icon notes-icon-accent">
-              <i class="fa fa-brain"></i>
-            </div>
-            <div>
-              <h3 class="notes-title">人工智能笔记</h3>
-              <p class="notes-subtitle">机器学习/深度学习/自然语言处理</p>
-            </div>
-          </div>
-          <div class="notes-list">
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> 机器学习基础算法总结
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> 神经网络原理与实现
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> TensorFlow 实战教程
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> 大语言模型应用开发
-            </a>
-          </div>
-          <a href="#" class="notes-link">
-            查看全部 <i class="fa fa-arrow-right ml-1"></i>
-          </a>
-        </div>
-        
-        <!-- 笔记卡片 3 -->
-        <div class="card card-hover notes-card">
-          <div class="notes-header">
-            <div class="notes-icon notes-icon-secondary">
-              <i class="fa fa-server"></i>
-            </div>
-            <div>
-              <h3 class="notes-title">后端开发笔记</h3>
-              <p class="notes-subtitle">Node.js/Java/Python/数据库</p>
-            </div>
-          </div>
-          <div class="notes-list">
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> Node.js 后端开发实战
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> RESTful API 设计规范
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> 数据库优化技巧总结
-            </a>
-            <a href="#" class="notes-item">
-              <i class="fa fa-file-text-o mr-2"></i> 微服务架构入门指南
-            </a>
-          </div>
-          <a href="#" class="notes-link">
-            查看全部 <i class="fa fa-arrow-right ml-1"></i>
-          </a>
-        </div>
-      </div>
-      
-      <!-- 热门笔记 -->
-      <div class="mt-16">
-        <h3 class="section-title text-center">热门学习笔记</h3>
-        <div class="grid grid-1 grid-2-md grid-4-lg gap-6">
-          <!-- 热门笔记 1 -->
-          <div class="card card-hover popular-note-card">
-            <div class="popular-note-meta">
-              <span class="tag tag-primary">前端</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-12</span>
-            </div>
-            <h4 class="popular-note-title">现代CSS特性完全指南</h4>
-            <p class="popular-note-desc">详细介绍CSS Grid、Flexbox、Custom Properties等现代CSS特性的使用方法和技巧</p>
-            <div class="popular-note-stats">
-              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
-              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
-            </div>
-          </div>
-          
-          <!-- 热门笔记 2 -->
-          <div class="card card-hover popular-note-card">
-            <div class="popular-note-meta">
-              <span class="tag tag-accent">AI</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-08</span>
-            </div>
-            <h4 class="popular-note-title">Python数据分析实战手册</h4>
-            <p class="popular-note-desc">使用Pandas、NumPy、Matplotlib进行数据分析的实战教程，包含多个真实案例</p>
-            <div class="popular-note-stats">
-              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
-              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
-            </div>
-          </div>
-          
-          <!-- 热门笔记 3 -->
-          <div class="card card-hover popular-note-card">
-            <div class="popular-note-meta">
-              <span class="tag tag-secondary">后端</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-07-05</span>
-            </div>
-            <h4 class="popular-note-title">RESTful API 设计最佳实践</h4>
-            <p class="popular-note-desc">总结RESTful API设计的最佳实践，包括URL设计、请求方法、状态码使用等内容</p>
-            <div class="popular-note-stats">
-              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
-              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
-            </div>
-          </div>
-          
-          <!-- 热门笔记 4 -->
-          <div class="card card-hover popular-note-card">
-            <div class="popular-note-meta">
-              <span class="tag tag-primary">全栈</span>
-              <span><i class="fa fa-calendar-o mr-1"></i> 2025-06-30</span>
-            </div>
-            <h4 class="popular-note-title">Docker容器化部署指南</h4>
-            <p class="popular-note-desc">详细介绍Docker的使用方法，包括镜像构建、容器管理、多容器部署等核心知识点</p>
-            <div class="popular-note-stats">
-              <span><i class="fa fa-eye mr-1"></i> 0 阅读</span>
-              <span><i class="fa fa-comment-o mr-1"></i> 0 评论</span>
-            </div>
-          </div>
+      <!-- 笔记列表（初始为空） -->
+      <div id="notesContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+        <div class="empty-state">
+          <i class="fa fa-book empty-icon"></i>
+          <p class="empty-text">暂无笔记资源，可通过左侧列表添加</p>
         </div>
       </div>
     </div>
@@ -598,175 +163,16 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">代码资源库</h2>
-        <p class="section-desc">收集整理的各类实用代码片段和完整项目源码，方便学习和快速开发</p>
+        <p class="section-desc">创建列表管理代码片段，记录下载量和点赞数</p>
         <div class="section-divider"></div>
       </div>
       
-      <!-- 代码分类 -->
-      <div class="tabs">
-        <button class="tab-btn active">全部代码</button>
-        <button class="tab-btn">前端代码</button>
-        <button class="tab-btn">后端代码</button>
-        <button class="tab-btn">AI代码</button>
-        <button class="tab-btn">工具脚本</button>
-      </div>
-      
-      <div class="grid grid-1 grid-2-md grid-3-md gap-8">
-        <!-- 代码库卡片 1 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">响应式导航栏组件</h3>
-              <p class="code-lang">HTML/CSS/JavaScript</p>
-            </div>
-            <div class="code-icon notes-icon-primary">
-              <i class="fa fa-html5"></i>
-            </div>
-          </div>
-          <p class="code-desc">支持桌面和移动端的响应式导航栏组件，包含下拉菜单、汉堡菜单等功能</p>
-          <div class="code-tags">
-            <span class="tag">导航栏</span>
-            <span class="tag">响应式</span>
-            <span class="tag">前端组件</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
+      <!-- 代码列表（初始为空） -->
+      <div id="codeLibraryContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+        <div class="empty-state">
+          <i class="fa fa-code empty-icon"></i>
+          <p class="empty-text">暂无代码资源，可通过左侧列表添加</p>
         </div>
-        
-        <!-- 代码库卡片 2 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">Python数据分析工具集</h3>
-              <p class="code-lang">Python/Pandas/Matplotlib</p>
-            </div>
-            <div class="code-icon notes-icon-accent">
-              <i class="fa fa-python"></i>
-            </div>
-          </div>
-          <p class="code-desc">包含数据清洗、可视化、统计分析等常用功能的Python工具集，适用于数据分析场景</p>
-          <div class="code-tags">
-            <span class="tag">Python</span>
-            <span class="tag">数据分析</span>
-            <span class="tag">可视化</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
-        </div>
-        
-        <!-- 代码库卡片 3 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">Node.js RESTful API模板</h3>
-              <p class="code-lang">Node.js/Express/MongoDB</p>
-            </div>
-            <div class="code-icon notes-icon-secondary">
-              <i class="fa fa-nodejs"></i>
-            </div>
-          </div>
-          <p class="code-desc">完整的Node.js RESTful API项目模板，包含用户认证、权限控制、数据验证等功能</p>
-          <div class="code-tags">
-            <span class="tag">Node.js</span>
-            <span class="tag">API</span>
-            <span class="tag">后端</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
-        </div>
-        
-        <!-- 代码库卡片 4 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">React组件库</h3>
-              <p class="code-lang">React/TypeScript/Tailwind CSS</p>
-            </div>
-            <div class="code-icon notes-icon-primary">
-              <i class="fa fa-react"></i>
-            </div>
-          </div>
-          <p class="code-desc">包含按钮、表单、卡片等常用UI组件的React组件库，支持自定义主题和样式</p>
-          <div class="code-tags">
-            <span class="tag">React</span>
-            <span class="tag">UI组件</span>
-            <span class="tag">TypeScript</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
-        </div>
-        
-        <!-- 代码库卡片 5 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">机器学习算法实现</h3>
-              <p class="code-lang">Python/Scikit-learn</p>
-            </div>
-            <div class="code-icon notes-icon-accent">
-              <i class="fa fa-brain"></i>
-            </div>
-          </div>
-          <p class="code-desc">从零实现的机器学习算法集合，包括线性回归、决策树、神经网络等经典算法</p>
-          <div class="code-tags">
-            <span class="tag">机器学习</span>
-            <span class="tag">算法</span>
-            <span class="tag">Python</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
-        </div>
-        
-        <!-- 代码库卡片 6 -->
-        <div class="card card-hover code-card">
-          <div class="code-header">
-            <div>
-              <h3 class="code-title">自动化测试脚本集</h3>
-              <p class="code-lang">Python/Selenium/Pytest</p>
-            </div>
-            <div class="code-icon notes-icon-secondary">
-              <i class="fa fa-check-square-o"></i>
-            </div>
-          </div>
-          <p class="code-desc">Web自动化测试和接口自动化测试的脚本集合，支持测试报告生成和持续集成</p>
-          <div class="code-tags">
-            <span class="tag">自动化测试</span>
-            <span class="tag">Selenium</span>
-            <span class="tag">Pytest</span>
-          </div>
-          <div class="code-footer">
-            <a href="#" class="code-link">
-              <i class="fa fa-github mr-1"></i> 查看源码
-            </a>
-            <span class="code-likes"><i class="fa fa-thumbs-up mr-1"></i> 0</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="text-center mt-12">
-        <a href="#" class="btn btn-outline">
-          浏览更多代码 <i class="fa fa-angle-right ml-2"></i>
-        </a>
       </div>
     </div>
   </section>
@@ -776,12 +182,12 @@
     <div class="container">
       <div class="section-header">
         <h2 class="section-title">学习数据统计</h2>
-        <p class="section-desc">展示各类学习资源的访问和使用情况，帮助你了解学习进度</p>
+        <p class="section-desc">展示你的资源数据统计（基于真实记录）</p>
         <div class="section-divider"></div>
       </div>
       
       <div class="grid grid-1 grid-2-md gap-8">
-        <!-- 图表 1 -->
+        <!-- 资源访问分布图表 -->
         <div class="card p-6">
           <h3 class="text-xl font-bold mb-6">资源访问分布</h3>
           <div class="chart-container">
@@ -789,11 +195,11 @@
           </div>
         </div>
         
-        <!-- 图表 2 -->
+        <!-- 月度学习时间图表 -->
         <div class="card p-6">
-          <h3 class="text-xl font-bold mb-6">月度学习时间</h3>
+          <h3 class="text-xl font-bold mb-6">月度资源添加量</h3>
           <div class="chart-container">
-            <canvas id="learningTimeChart"></canvas>
+            <canvas id="resourceAddChart"></canvas>
           </div>
         </div>
       </div>
@@ -803,8 +209,8 @@
   <!-- 订阅区域 -->
   <section class="subscribe">
     <div class="container subscribe-container">
-      <h2 class="subscribe-title">获取最新学习资源</h2>
-      <p class="subscribe-desc">订阅我们的通讯，第一时间获取最新的学习资源、项目更新和技术教程</p>
+      <h2 class="subscribe-title">获取最新功能更新</h2>
+      <p class="subscribe-desc">订阅我们的通讯，第一时间获取平台功能更新和使用技巧</p>
       <form class="subscribe-form">
         <input type="email" placeholder="输入你的邮箱地址" class="subscribe-input">
         <button type="submit" class="subscribe-btn">
@@ -824,7 +230,7 @@
           <span>LearnHub</span>
         </div>
         <p class="footer-desc">
-          专注于提供高质量的学习资源和项目展示平台，助力你的学习和成长之旅
+          专注于提供个性化学习资源管理平台，助力你的学习和成长之旅
         </p>
         <div class="footer-social">
           <a href="#" class="social-link">
@@ -895,134 +301,104 @@
     </div>
   </footer>
 
-  <!-- JavaScript 脚本 -->
-  <script>
-    // 导航栏滚动效果
-    window.addEventListener('scroll', function() {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 50) {
-        navbar.classList.add('nav-scrolled');
-      } else {
-        navbar.classList.remove('nav-scrolled');
-      }
-    });
+  <!-- 模态框：创建/编辑列表 -->
+  <div id="listModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle" class="modal-title">创建列表</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="listForm">
+          <div class="form-group">
+            <label for="listName">列表名称</label>
+            <input type="text" id="listName" class="form-input" required placeholder="输入列表名称">
+          </div>
+          <div class="form-group">
+            <label for="listType">资源类型</label>
+            <select id="listType" class="form-select" required>
+              <option value="desktop-app">桌面应用</option>
+              <option value="web-app">Web应用</option>
+              <option value="video">视频资源</option>
+              <option value="note">学习笔记</option>
+              <option value="code">代码库</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="listDescription">列表描述（可选）</label>
+            <textarea id="listDescription" class="form-textarea" rows="3" placeholder="输入列表描述"></textarea>
+          </div>
+          <input type="hidden" id="listId">
+          <input type="hidden" id="parentListId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelModalBtn" class="btn btn-outline">取消</button>
+        <button id="submitListBtn" class="btn btn-primary">确认创建</button>
+      </div>
+    </div>
+  </div>
 
-    // 移动端菜单切换
-    const menuBtn = document.getElementById('menuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    
-    menuBtn.addEventListener('click', function() {
-      mobileMenu.classList.toggle('active');
-    });
+  <!-- 模态框：添加资源 -->
+  <div id="resourceModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="resourceModalTitle" class="modal-title">添加资源</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="resourceForm">
+          <div class="form-group">
+            <label for="resourceName">资源名称</label>
+            <input type="text" id="resourceName" class="form-input" required placeholder="输入资源名称">
+          </div>
+          <div class="form-group">
+            <label for="resourceDesc">资源描述</label>
+            <textarea id="resourceDesc" class="form-textarea" rows="3" required placeholder="输入资源描述"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="resourceCover">封面图片URL（可选）</label>
+            <input type="url" id="resourceCover" class="form-input" placeholder="输入图片URL">
+          </div>
+          <div class="form-group">
+            <label for="resourceUrl">资源链接（可选）</label>
+            <input type="url" id="resourceUrl" class="form-input" placeholder="输入资源访问链接">
+          </div>
+          <input type="hidden" id="resourceId">
+          <input type="hidden" id="resourceListId">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelResourceModalBtn" class="btn btn-outline">取消</button>
+        <button id="submitResourceBtn" class="btn btn-primary">确认添加</button>
+      </div>
+    </div>
+  </div>
 
-    // 标签切换功能
-    const tabBtns = document.querySelectorAll('.tab-btn');
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        // 移除所有活跃状态
-        tabBtns.forEach(b => b.classList.remove('active'));
-        // 添加当前活跃状态
-        this.classList.add('active');
-      });
-    });
+  <!-- 模态框：评论区 -->
+  <div id="commentModal" class="modal">
+    <div class="modal-content modal-lg">
+      <div class="modal-header">
+        <h3 id="commentModalTitle" class="modal-title">资源评论</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="comment-input-area">
+          <textarea id="commentContent" class="form-textarea" rows="3" placeholder="输入你的评论..."></textarea>
+          <button id="submitCommentBtn" class="btn btn-primary mt-2">提交评论</button>
+        </div>
+        <div id="commentsList" class="comments-list mt-4">
+          <!-- 评论列表由JS动态生成 -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancelCommentModalBtn" class="btn btn-outline">关闭</button>
+      </div>
+    </div>
+  </div>
 
-    // 图表初始化
-    window.addEventListener('load', function() {
-      // 资源访问分布图表
-      const resourceCtx = document.getElementById('resourceChart').getContext('2d');
-      new Chart(resourceCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['桌面应用', 'Web应用', '视频资源', '学习笔记', '代码库'],
-          datasets: [{
-            data: [15, 25, 30, 20, 10],
-            backgroundColor: [
-              '#165DFF',
-              '#36CFC9',
-              '#722ED1',
-              '#FF7D00',
-              '#00B42A'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'bottom',
-              labels: {
-                padding: 20,
-                font: {
-                  size: 12
-                }
-              }
-            }
-          },
-          cutout: '65%'
-        }
-      });
-
-      // 月度学习时间图表
-      const timeCtx = document.getElementById('learningTimeChart').getContext('2d');
-      new Chart(timeCtx, {
-        type: 'bar',
-        data: {
-          labels: ['1月', '2月', '3月', '4月', '5月', '6月'],
-          datasets: [{
-            label: '学习时长(小时)',
-            data: [45, 62, 78, 56, 92, 110],
-            backgroundColor: '#165DFF',
-            borderRadius: 6,
-            barThickness: 30
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    });
-
-    // 平滑滚动
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        const targetElement = document.querySelector(targetId);
-        
-        if (targetElement) {
-          // 关闭移动端菜单
-          mobileMenu.classList.remove('active');
-          
-          // 滚动到目标位置
-          window.scrollTo({
-            top: targetElement.offsetTop - 80,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-  </script>
+  <!-- 引入JS文件 -->
+  <script src="data.json" type="application/json" id="initialData"></script>
+  <script src="app.js"></script>
 </body>
 </html>
