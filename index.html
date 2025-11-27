@@ -61,11 +61,16 @@
           <button id="createRootListBtn" class="btn btn-primary">
             <i class="fa fa-plus btn-icon"></i> 创建根列表
           </button>
+          <button id="dataManagementBtn" class="btn btn-outline">
+            <i class="fa fa-cloud btn-icon"></i> 数据管理
+          </button>
         </div>
         
         <!-- 用户自定义列表区域 -->
         <div id="userListsContainer" class="user-lists-container mt-8">
-          <h3 class="user-lists-title">我的资源列表</h3>
+          <h3 class="user-lists-title">
+            <i class="fa fa-folder-open"></i> 我的资源列表
+          </h3>
           <div id="listsTree" class="lists-tree">
             <!-- 列表树由JS动态生成 -->
           </div>
@@ -92,7 +97,7 @@
       </div>
       
       <!-- 应用列表（初始为空，由用户添加） -->
-      <div id="desktopAppsContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+      <div id="desktopAppsContainer" class="grid grid-1 grid-2-md grid-3-lg gap-8">
         <div class="empty-state">
           <i class="fa fa-folder-open-o empty-icon"></i>
           <p class="empty-text">暂无应用数据，可通过左侧列表添加</p>
@@ -111,7 +116,7 @@
       </div>
       
       <!-- Web应用列表（初始为空） -->
-      <div id="webAppsContainer" class="grid grid-1 grid-2-md gap-8">
+      <div id="webAppsContainer" class="grid grid-1 grid-2-md grid-3-lg gap-8">
         <div class="empty-state">
           <i class="fa fa-globe empty-icon"></i>
           <p class="empty-text">暂无Web应用数据，可通过左侧列表添加</p>
@@ -130,7 +135,7 @@
       </div>
       
       <!-- 视频列表（初始为空） -->
-      <div id="videosContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+      <div id="videosContainer" class="grid grid-1 grid-2-md grid-3-lg gap-8">
         <div class="empty-state">
           <i class="fa fa-play-circle-o empty-icon"></i>
           <p class="empty-text">暂无视频资源，可通过左侧列表添加</p>
@@ -149,7 +154,7 @@
       </div>
       
       <!-- 笔记列表（初始为空） -->
-      <div id="notesContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+      <div id="notesContainer" class="grid grid-1 grid-2-md grid-3-lg gap-8">
         <div class="empty-state">
           <i class="fa fa-book empty-icon"></i>
           <p class="empty-text">暂无笔记资源，可通过左侧列表添加</p>
@@ -168,7 +173,7 @@
       </div>
       
       <!-- 代码列表（初始为空） -->
-      <div id="codeLibraryContainer" class="grid grid-1 grid-2-md grid-3-md gap-8">
+      <div id="codeLibraryContainer" class="grid grid-1 grid-2-md grid-3-lg gap-8">
         <div class="empty-state">
           <i class="fa fa-code empty-icon"></i>
           <p class="empty-text">暂无代码资源，可通过左侧列表添加</p>
@@ -186,20 +191,62 @@
         <div class="section-divider"></div>
       </div>
       
-      <div class="grid grid-1 grid-2-md gap-8">
-        <!-- 资源访问分布图表 -->
-        <div class="card p-6">
-          <h3 class="text-xl font-bold mb-6">资源访问分布</h3>
-          <div class="chart-container">
-            <canvas id="resourceChart"></canvas>
+      <div class="stats-grid">
+        <!-- 统计卡片 -->
+        <div class="stats-cards grid grid-2 grid-4-md gap-4 mb-8">
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i class="fa fa-eye stat-card-icon"></i>
+            </div>
+            <div class="stat-card-content">
+              <div class="stat-card-number" id="totalViews">0</div>
+              <div class="stat-card-label">总浏览量</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i class="fa fa-thumbs-up stat-card-icon"></i>
+            </div>
+            <div class="stat-card-content">
+              <div class="stat-card-number" id="totalLikes">0</div>
+              <div class="stat-card-label">总点赞数</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i class="fa fa-comment stat-card-icon"></i>
+            </div>
+            <div class="stat-card-content">
+              <div class="stat-card-number" id="totalComments">0</div>
+              <div class="stat-card-label">总评论数</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon-wrapper">
+              <i class="fa fa-file-text stat-card-icon"></i>
+            </div>
+            <div class="stat-card-content">
+              <div class="stat-card-number" id="totalResources">0</div>
+              <div class="stat-card-label">资源总数</div>
+            </div>
           </div>
         </div>
         
-        <!-- 月度学习时间图表 -->
-        <div class="card p-6">
-          <h3 class="text-xl font-bold mb-6">月度资源添加量</h3>
-          <div class="chart-container">
-            <canvas id="resourceAddChart"></canvas>
+        <div class="grid grid-1 grid-2-md gap-8">
+          <!-- 资源访问分布图表 -->
+          <div class="card p-6">
+            <h3 class="text-xl font-bold mb-6">资源类型分布</h3>
+            <div class="chart-container">
+              <canvas id="resourceChart"></canvas>
+            </div>
+          </div>
+          
+          <!-- 月度学习时间图表 -->
+          <div class="card p-6">
+            <h3 class="text-xl font-bold mb-6">月度资源添加趋势</h3>
+            <div class="chart-container">
+              <canvas id="resourceAddChart"></canvas>
+            </div>
           </div>
         </div>
       </div>
@@ -277,7 +324,7 @@
         <ul class="footer-contact">
           <li class="contact-item">
             <i class="fa fa-envelope-o contact-icon"></i>
-            <span>邮箱暂无</span>
+            <span>contact@learnhub.com</span>
           </li>
           <li class="contact-item">
             <i class="fa fa-map-marker contact-icon"></i>
@@ -285,7 +332,7 @@
           </li>
           <li class="contact-item">
             <i class="fa fa-phone contact-icon"></i>
-            <span>电话暂无</span>
+            <span>+86 138 0000 0000</span>
           </li>
         </ul>
       </div>
@@ -311,12 +358,13 @@
       <div class="modal-body">
         <form id="listForm">
           <div class="form-group">
-            <label for="listName">列表名称</label>
+            <label for="listName" class="form-label">列表名称 *</label>
             <input type="text" id="listName" class="form-input" required placeholder="输入列表名称">
           </div>
           <div class="form-group">
-            <label for="listType">资源类型</label>
+            <label for="listType" class="form-label">资源类型 *</label>
             <select id="listType" class="form-select" required>
+              <option value="">请选择资源类型</option>
               <option value="desktop-app">桌面应用</option>
               <option value="web-app">Web应用</option>
               <option value="video">视频资源</option>
@@ -325,7 +373,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="listDescription">列表描述（可选）</label>
+            <label for="listDescription" class="form-label">列表描述（可选）</label>
             <textarea id="listDescription" class="form-textarea" rows="3" placeholder="输入列表描述"></textarea>
           </div>
           <input type="hidden" id="listId">
@@ -349,19 +397,20 @@
       <div class="modal-body">
         <form id="resourceForm">
           <div class="form-group">
-            <label for="resourceName">资源名称</label>
+            <label for="resourceName" class="form-label">资源名称 *</label>
             <input type="text" id="resourceName" class="form-input" required placeholder="输入资源名称">
           </div>
           <div class="form-group">
-            <label for="resourceDesc">资源描述</label>
+            <label for="resourceDesc" class="form-label">资源描述 *</label>
             <textarea id="resourceDesc" class="form-textarea" rows="3" required placeholder="输入资源描述"></textarea>
           </div>
           <div class="form-group">
-            <label for="resourceCover">封面图片URL（可选）</label>
+            <label for="resourceCover" class="form-label">封面图片URL（可选）</label>
             <input type="url" id="resourceCover" class="form-input" placeholder="输入图片URL">
+            <small class="form-help">留空将使用随机图片</small>
           </div>
           <div class="form-group">
-            <label for="resourceUrl">资源链接（可选）</label>
+            <label for="resourceUrl" class="form-label">资源链接（可选）</label>
             <input type="url" id="resourceUrl" class="form-input" placeholder="输入资源访问链接">
           </div>
           <input type="hidden" id="resourceId">
