@@ -20,15 +20,34 @@ let appData = {
       { month: '3月', count: 0 },
       { month: '4月', count: 0 },
       { month: '5月', count: 0 },
-      { month: '6月', count: 0 }
+      { month: '6月', count: 0 },
+      { month: '7月', count: 0 },
+      { month: '8月', count: 0 },
+      { month: '9月', count: 0 },
+      { month: '10月', count: 0 },
+      { month: '11月', count: 0 },
+      { month: '12月', count: 0 }
     ]
   }
 };
+
+// 公共资源存储（模拟云端数据）
+let publicResources = {
+  'desktop-app': [],
+  'web-app': [],
+  'video': [],
+  'note': [],
+  'code': []
+};
+
+// 用户标识（用于区分不同用户）
+let userId = localStorage.getItem('learnHubUserId') || generateId();
 
 // DOM元素缓存
 const dom = {
   // 主要元素
   createRootListBtn: document.getElementById('createRootListBtn'),
+  dataManagementBtn: document.getElementById('dataManagementBtn'),
   listsTree: document.getElementById('listsTree'),
   menuBtn: document.getElementById('menuBtn'),
   mobileMenu: document.getElementById('mobileMenu'),
@@ -77,20 +96,109 @@ const dom = {
   
   // 图表
   resourceChart: document.getElementById('resourceChart'),
-  resourceAddChart: document.getElementById('resourceAddChart')
+  resourceAddChart: document.getElementById('resourceAddChart'),
+  
+  // 统计卡片
+  totalViews: document.getElementById('totalViews'),
+  totalLikes: document.getElementById('totalLikes'),
+  totalComments: document.getElementById('totalComments'),
+  totalResources: document.getElementById('totalResources')
 };
 
 // 当前选中的资源（用于评论）
 let currentResourceId = null;
+// 图表实例
+let resourceChartInstance = null;
+let resourceAddChartInstance = null;
 
 // 初始化
 function init() {
+  // 保存用户ID
+  localStorage.setItem('learnHubUserId', userId);
+  
   loadDataFromLocalStorage();
+  loadPublicResources();
   renderListsTree();
   renderAllResources();
   initCharts();
   bindEvents();
   updateStats();
+  updateStatsCards();
+  
+  // 添加示例数据（首次使用时）
+  if (appData.lists.length === 0 && appData.resources.length === 0) {
+    addSampleData();
+  }
+}
+
+// 添加示例数据
+function addSampleData() {
+  // 添加示例列表
+  const sampleLists = [
+    {
+      id: generateId(),
+      name: '前端开发资源',
+      type: 'web-app',
+      description: '收集前端开发相关的优秀资源',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: generateId(),
+      name: 'Python学习视频',
+      type: 'video',
+      description: 'Python编程语言学习视频合集',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+  ];
+  
+  appData.lists.push(...sampleLists);
+  
+  // 添加示例资源
+  const sampleResources = [
+    {
+      id: generateId(),
+      name: 'Vue.js 官方文档',
+      description: 'Vue.js 官方文档，包含完整的API参考和教程',
+      cover: 'https://picsum.photos/seed/vue/400/300',
+      url: 'https://vuejs.org',
+      listId: sampleLists[0].id,
+      type: 'web-app',
+      views: 15,
+      likes: 8,
+      downloads: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    },
+    {
+      id: generateId(),
+      name: 'React 学习指南',
+      description: 'React 从入门到精通的完整学习路径',
+      cover: 'https://picsum.photos/seed/react/400/300',
+      url: 'https://reactjs.org',
+      listId: sampleLists[0].id,
+      type: 'web-app',
+      views: 12,
+      likes: 6,
+      downloads: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    }
+  ];
+  
+  appData.resources.push(...sampleResources);
+  
+  // 更新统计
+  updateMonthlyStats();
+  updateStats();
+  saveDataToLocalStorage();
+  
+  // 重新渲染
+  renderListsTree();
+  renderAllResources();
+  initCharts();
+  updateStatsCards();
 }
 
 // 从本地存储加载数据
@@ -98,7 +206,16 @@ function loadDataFromLocalStorage() {
   const savedData = localStorage.getItem('learnHubData');
   if (savedData) {
     try {
-      appData = JSON.parse(savedData);
+      const parsedData = JSON.parse(savedData);
+      // 确保数据结构完整
+      appData = {
+        ...appData,
+        ...parsedData,
+        stats: {
+          ...appData.stats,
+          ...parsedData.stats
+        }
+      };
     } catch (e) {
       console.error('加载数据失败:', e);
     }
@@ -110,9 +227,344 @@ function saveDataToLocalStorage() {
   localStorage.setItem('learnHubData', JSON.stringify(appData));
 }
 
+// 加载公共资源（模拟从云端加载）
+function loadPublicResources() {
+  const savedPublicResources = localStorage.getItem('learnHubPublicResources');
+  if (savedPublicResources) {
+    try {
+      publicResources = JSON.parse(savedPublicResources);
+    } catch (e) {
+      console.error('加载公共资源失败:', e);
+    }
+  }
+}
+
+// 保存公共资源到本地存储（模拟保存到云端）
+function savePublicResources() {
+  localStorage.setItem('learnHubPublicResources', JSON.stringify(publicResources));
+}
+
 // 生成唯一ID
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+}
+
+// 打开数据管理模态框
+function openDataManagementModal() {
+  const modal = document.createElement('div');
+  modal.className = 'modal active';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">数据管理与同步</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="data-management-section">
+          <h4>多设备同步</h4>
+          <p>导出数据并在其他设备导入以实现同步</p>
+          <div class="data-actions">
+            <button id="exportDataBtn" class="btn btn-primary">
+              <i class="fa fa-download"></i> 导出数据
+            </button>
+            <button id="importDataBtn" class="btn btn-outline">
+              <i class="fa fa-upload"></i> 导入数据
+            </button>
+            <input type="file" id="importDataFile" accept=".json" style="display: none;">
+          </div>
+        </div>
+        
+        <div class="data-management-section mt-4">
+          <h4>公共资源</h4>
+          <p>将您的资源分享到公共区供其他用户使用</p>
+          <div class="public-stats">
+            <div class="stat-grid">
+              <div class="stat-item-grid">
+                <span class="stat-number">${Object.values(publicResources).flat().length}</span>
+                <span class="stat-label">公共资源总数</span>
+              </div>
+              <div class="stat-item-grid">
+                <span class="stat-number">${appData.resources.length}</span>
+                <span class="stat-label">我的资源总数</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="data-management-section mt-4">
+          <h4>用户信息</h4>
+          <p>用户ID: <code>${userId}</code></p>
+          <p class="text-sm text-gray-600">将此ID在其他设备上使用可实现数据关联</p>
+        </div>
+        
+        <div class="data-management-section mt-4">
+          <h4>数据维护</h4>
+          <p>清理和重置数据</p>
+          <div class="data-actions">
+            <button id="clearDataBtn" class="btn btn-outline" style="color: var(--color-danger); border-color: var(--color-danger);">
+              <i class="fa fa-trash"></i> 清空所有数据
+            </button>
+            <button id="resetDataBtn" class="btn btn-outline">
+              <i class="fa fa-refresh"></i> 重置为示例数据
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeModal(this.closest('.modal'))">关闭</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  // 绑定事件
+  modal.querySelector('.modal-close').addEventListener('click', () => closeModal(modal));
+  modal.querySelector('#exportDataBtn').addEventListener('click', exportData);
+  modal.querySelector('#importDataBtn').addEventListener('click', () => {
+    document.getElementById('importDataFile').click();
+  });
+  modal.querySelector('#importDataFile').addEventListener('change', importData);
+  modal.querySelector('#clearDataBtn').addEventListener('click', clearAllData);
+  modal.querySelector('#resetDataBtn').addEventListener('click', resetToSampleData);
+  
+  // 点击外部关闭
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal(modal);
+  });
+}
+
+// 导出数据
+function exportData() {
+  const dataToExport = {
+    appData,
+    publicResources,
+    userId,
+    exportTime: new Date().toISOString(),
+    version: '1.0'
+  };
+  
+  const dataStr = JSON.stringify(dataToExport, null, 2);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  
+  const url = URL.createObjectURL(dataBlob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `learnhub-backup-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+  
+  showNotification('数据导出成功！');
+}
+
+// 导入数据
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      
+      if (confirm('导入数据将覆盖当前数据，确定要继续吗？')) {
+        appData = importedData.appData || appData;
+        publicResources = importedData.publicResources || publicResources;
+        
+        saveDataToLocalStorage();
+        savePublicResources();
+        
+        // 重新初始化界面
+        renderListsTree();
+        renderAllResources();
+        updateStats();
+        updateStatsCards();
+        initCharts();
+        
+        showNotification('数据导入成功！');
+        
+        // 关闭模态框
+        const modal = document.querySelector('.modal.active');
+        if (modal) closeModal(modal);
+      }
+    } catch (error) {
+      alert('文件格式错误，请选择正确的数据文件');
+      console.error('导入数据失败:', error);
+    }
+  };
+  reader.readAsText(file);
+  
+  // 清空文件输入
+  event.target.value = '';
+}
+
+// 清空所有数据
+function clearAllData() {
+  if (confirm('确定要清空所有数据吗？此操作不可撤销！')) {
+    appData = {
+      lists: [],
+      resources: [],
+      comments: [],
+      stats: {
+        visits: 0,
+        likes: 0,
+        comments: 0,
+        resourceCounts: {
+          'desktop-app': 0,
+          'web-app': 0,
+          'video': 0,
+          'note': 0,
+          'code': 0
+        },
+        monthlyAdds: Array(12).fill().map((_, i) => ({ 
+          month: `${i+1}月`, 
+          count: 0 
+        }))
+      }
+    };
+    
+    publicResources = {
+      'desktop-app': [],
+      'web-app': [],
+      'video': [],
+      'note': [],
+      'code': []
+    };
+    
+    saveDataToLocalStorage();
+    savePublicResources();
+    
+    renderListsTree();
+    renderAllResources();
+    updateStats();
+    updateStatsCards();
+    initCharts();
+    
+    showNotification('所有数据已清空');
+    
+    const modal = document.querySelector('.modal.active');
+    if (modal) closeModal(modal);
+  }
+}
+
+// 重置为示例数据
+function resetToSampleData() {
+  if (confirm('确定要重置为示例数据吗？当前数据将被覆盖！')) {
+    clearAllData();
+    setTimeout(() => {
+      addSampleData();
+      showNotification('已重置为示例数据');
+    }, 100);
+  }
+}
+
+// 分享资源到公共区
+function shareToPublic(resourceId) {
+  const resource = appData.resources.find(r => r.id === resourceId);
+  if (!resource) return;
+  
+  if (confirm(`确定要将"${resource.name}"分享到公共区吗？其他用户都可以看到和使用这个资源。`)) {
+    const publicResource = {
+      ...resource,
+      id: generateId(), // 新ID避免冲突
+      originalId: resource.id,
+      author: `用户_${userId.slice(-6)}`, // 使用用户ID后6位作为作者名
+      isPublic: true,
+      sharedAt: new Date().toISOString(),
+      publicViews: 0,
+      publicLikes: 0,
+      publicDownloads: 0
+    };
+    
+    // 添加到公共资源
+    publicResources[resource.type].push(publicResource);
+    savePublicResources();
+    
+    // 更新显示
+    renderAllResources();
+    showNotification('资源已成功分享到公共区！');
+  }
+}
+
+// 点赞公共资源
+function likePublicResource(resourceId, resourceType) {
+  const resource = publicResources[resourceType].find(r => r.id === resourceId);
+  if (resource) {
+    resource.publicLikes = (resource.publicLikes || 0) + 1;
+    savePublicResources();
+    renderAllResources();
+    showNotification('已点赞！');
+  }
+}
+
+// 下载公共资源
+function downloadPublicResource(resourceId, resourceType) {
+  const resource = publicResources[resourceType].find(r => r.id === resourceId);
+  if (resource) {
+    resource.publicDownloads = (resource.publicDownloads || 0) + 1;
+    savePublicResources();
+    renderAllResources();
+    showNotification('下载计数已更新！');
+  }
+}
+
+// 查看公共资源详情
+function viewPublicResource(resourceId, resourceType) {
+  const resource = publicResources[resourceType].find(r => r.id === resourceId);
+  if (resource) {
+    resource.publicViews = (resource.publicViews || 0) + 1;
+    savePublicResources();
+    
+    // 打开详情模态框
+    const modal = document.createElement('div');
+    modal.className = 'modal active';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">资源详情</h3>
+          <button class="modal-close">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="resource-detail">
+            <img src="${resource.cover}" alt="${resource.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 1rem;">
+            <h4 style="margin-bottom: 0.5rem;">${resource.name}</h4>
+            <p style="color: var(--color-gray-600); margin-bottom: 1rem;">${resource.description}</p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+              <div>
+                <strong>作者:</strong><br>
+                <span>${resource.author}</span>
+              </div>
+              <div>
+                <strong>分享时间:</strong><br>
+                <span>${new Date(resource.sharedAt).toLocaleString('zh-CN')}</span>
+              </div>
+              <div>
+                <strong>浏览量:</strong><br>
+                <span>${resource.publicViews || 0}</span>
+              </div>
+              <div>
+                <strong>点赞数:</strong><br>
+                <span>${resource.publicLikes || 0}</span>
+              </div>
+            </div>
+            ${resource.url ? `<p><strong>访问链接:</strong> <a href="${resource.url}" target="_blank">${resource.url}</a></p>` : ''}
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal(this.closest('.modal'))">关闭</button>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    modal.querySelector('.modal-close').addEventListener('click', () => closeModal(modal));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal(modal);
+    });
+  }
 }
 
 // 渲染列表树
@@ -122,7 +574,7 @@ function renderListsTree() {
   const rootLists = appData.lists.filter(list => !list.parentId);
   
   if (rootLists.length === 0) {
-    dom.listsTree.innerHTML = '<p class="text-gray-400">暂无列表，点击"创建根列表"开始</p>';
+    dom.listsTree.innerHTML = '<p class="text-gray-400" style="padding: 1rem; text-align: center;">暂无列表，点击"创建根列表"开始</p>';
     return;
   }
   
@@ -169,6 +621,7 @@ function createListElement(list) {
   // 列表图标
   const listIcon = document.createElement('i');
   listIcon.className = 'fa fa-folder list-icon';
+  listIcon.style.color = getTypeColor(list.type);
   
   // 列表名称
   const listNameEl = document.createElement('span');
@@ -249,6 +702,18 @@ function createListElement(list) {
   return listEl;
 }
 
+// 获取类型颜色
+function getTypeColor(type) {
+  const colors = {
+    'desktop-app': '#3b82f6',
+    'web-app': '#10b981',
+    'video': '#f59e0b',
+    'note': '#ef4444',
+    'code': '#8b5cf6'
+  };
+  return colors[type] || '#64748b';
+}
+
 // 打开列表模态框
 function openListModal(mode, listId = null, parentId = null) {
   dom.listForm.reset();
@@ -283,6 +748,14 @@ function openResourceModal(mode, resourceId = null, listId = null) {
     dom.submitResourceBtn.textContent = '确认添加';
     dom.resourceId.value = '';
     dom.resourceListId.value = listId;
+    
+    // 如果从列表点击添加，自动选择列表类型
+    if (listId) {
+      const list = appData.lists.find(l => l.id === listId);
+      if (list) {
+        // 这里可以设置默认值，但保持表单清洁
+      }
+    }
   } else {
     const resource = appData.resources.find(r => r.id === resourceId);
     if (!resource) return;
@@ -303,7 +776,8 @@ function openResourceModal(mode, resourceId = null, listId = null) {
 // 打开评论模态框
 function openCommentModal(resourceId) {
   currentResourceId = resourceId;
-  const resource = appData.resources.find(r => r.id === resourceId);
+  const resource = appData.resources.find(r => r.id === resourceId) || 
+                   Object.values(publicResources).flat().find(r => r.id === resourceId);
   
   if (resource) {
     dom.commentModalTitle.textContent = `评论 - ${resource.name}`;
@@ -319,9 +793,12 @@ function renderComments(resourceId) {
   dom.commentsList.innerHTML = '';
   
   if (comments.length === 0) {
-    dom.commentsList.innerHTML = '<p class="text-gray-400 text-center">暂无评论</p>';
+    dom.commentsList.innerHTML = '<p class="text-gray-400 text-center" style="padding: 2rem;">暂无评论，快来发表第一条评论吧！</p>';
     return;
   }
+  
+  // 按时间倒序排列
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
   
   comments.forEach(comment => {
     const commentEl = document.createElement('div');
@@ -358,7 +835,12 @@ function submitListForm() {
   const parentId = dom.parentListId.value || null;
   
   if (!name) {
-    alert('请输入列表名称');
+    showNotification('请输入列表名称');
+    return;
+  }
+  
+  if (!type) {
+    showNotification('请选择资源类型');
     return;
   }
   
@@ -405,18 +887,18 @@ function submitResourceForm() {
   const listId = dom.resourceListId.value;
   
   if (!name || !description) {
-    alert('请填写资源名称和描述');
+    showNotification('请填写资源名称和描述');
     return;
   }
   
   if (!listId) {
-    alert('请先创建列表');
+    showNotification('请先创建列表');
     return;
   }
   
   const list = appData.lists.find(l => l.id === listId);
   if (!list) {
-    alert('列表不存在');
+    showNotification('列表不存在');
     return;
   }
   
@@ -459,6 +941,7 @@ function submitResourceForm() {
   saveDataToLocalStorage();
   renderAllResources();
   updateStats();
+  updateStatsCards();
   closeModal(dom.resourceModal);
   showNotification(id ? '资源更新成功' : '资源添加成功');
 }
@@ -468,12 +951,12 @@ function submitComment() {
   const content = dom.commentContent.value.trim();
   
   if (!content) {
-    alert('请输入评论内容');
+    showNotification('请输入评论内容');
     return;
   }
   
   if (!currentResourceId) {
-    alert('资源不存在');
+    showNotification('资源不存在');
     return;
   }
   
@@ -481,7 +964,7 @@ function submitComment() {
     id: generateId(),
     resourceId: currentResourceId,
     content,
-    author: '当前用户',
+    author: `用户_${userId.slice(-6)}`,
     likes: 0,
     timestamp: new Date().toISOString()
   };
@@ -493,6 +976,7 @@ function submitComment() {
   renderComments(currentResourceId);
   dom.commentContent.value = '';
   updateStats();
+  updateStatsCards();
   showNotification('评论发表成功');
 }
 
@@ -512,6 +996,8 @@ function deleteComment(commentId) {
     appData.comments = appData.comments.filter(c => c.id !== commentId);
     saveDataToLocalStorage();
     renderComments(currentResourceId);
+    updateStats();
+    updateStatsCards();
     showNotification('评论删除成功');
   }
 }
@@ -533,6 +1019,7 @@ function deleteList(listId) {
     renderListsTree();
     renderAllResources();
     updateStats();
+    updateStatsCards();
     showNotification('列表删除成功');
   }
 }
@@ -546,18 +1033,30 @@ function deleteResource(resourceId) {
     saveDataToLocalStorage();
     renderAllResources();
     updateStats();
+    updateStatsCards();
     showNotification('资源删除成功');
   }
 }
 
 // 增加资源浏览量
-function incrementViews(resourceId) {
-  const resource = appData.resources.find(r => r.id === resourceId);
-  if (resource) {
-    resource.views = (resource.views || 0) + 1;
-    appData.stats.visits++;
-    saveDataToLocalStorage();
-    updateStats();
+function incrementViews(resourceId, isPublic = false) {
+  if (isPublic) {
+    const resource = Object.values(publicResources).flat().find(r => r.id === resourceId);
+    if (resource) {
+      resource.publicViews = (resource.publicViews || 0) + 1;
+      savePublicResources();
+      renderAllResources();
+    }
+  } else {
+    const resource = appData.resources.find(r => r.id === resourceId);
+    if (resource) {
+      resource.views = (resource.views || 0) + 1;
+      appData.stats.visits++;
+      saveDataToLocalStorage();
+      updateStats();
+      updateStatsCards();
+      renderAllResources();
+    }
   }
 }
 
@@ -570,6 +1069,7 @@ function likeResource(resourceId) {
     saveDataToLocalStorage();
     renderAllResources();
     updateStats();
+    updateStatsCards();
     showNotification('点赞成功');
   }
 }
@@ -588,290 +1088,4 @@ function downloadResource(resourceId) {
 // 渲染所有资源
 function renderAllResources() {
   renderResourcesByType('desktop-app', dom.desktopAppsContainer);
-  renderResourcesByType('web-app', dom.webAppsContainer);
-  renderResourcesByType('video', dom.videosContainer);
-  renderResourcesByType('note', dom.notesContainer);
-  renderResourcesByType('code', dom.codeLibraryContainer);
-}
-
-// 按类型渲染资源
-function renderResourcesByType(type, container) {
-  const resources = appData.resources.filter(r => r.type === type);
-  
-  if (resources.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <i class="fa ${getTypeIcon(type)} empty-icon"></i>
-        <p class="empty-text">暂无${getTypeName(type)}数据，可通过左侧列表添加</p>
-      </div>
-    `;
-    return;
-  }
-  
-  container.innerHTML = '';
-  
-  resources.forEach(resource => {
-    const resourceEl = createResourceCard(resource);
-    container.appendChild(resourceEl);
-  });
-}
-
-// 创建资源卡片
-function createResourceCard(resource) {
-  const card = document.createElement('div');
-  card.className = 'resource-card';
-  
-  const time = new Date(resource.updatedAt).toLocaleDateString('zh-CN');
-  
-  card.innerHTML = `
-    <img src="${resource.cover}" alt="${resource.name}" class="resource-cover" onerror="this.src='https://picsum.photos/400/300?random=${resource.id}'">
-    <div class="resource-content">
-      <h3 class="resource-title">${resource.name}</h3>
-      <p class="resource-desc">${resource.description}</p>
-      <div class="resource-meta">
-        <span>更新: ${time}</span>
-        ${resource.url ? `<a href="${resource.url}" target="_blank" onclick="incrementViews('${resource.id}')">访问链接</a>` : ''}
-      </div>
-      <div class="resource-stats">
-        <div class="stat-item">
-          <i class="fa fa-eye stat-icon"></i>
-          <span>${resource.views || 0}</span>
-        </div>
-        <div class="stat-item">
-          <i class="fa fa-thumbs-up stat-icon"></i>
-          <span>${resource.likes || 0}</span>
-        </div>
-        ${resource.type === 'code' ? `
-        <div class="stat-item">
-          <i class="fa fa-download stat-icon"></i>
-          <span>${resource.downloads || 0}</span>
-        </div>
-        ` : ''}
-        <div class="resource-actions">
-          <button class="resource-action-btn" onclick="likeResource('${resource.id}')" title="点赞">
-            <i class="fa fa-thumbs-up"></i>
-          </button>
-          <button class="resource-action-btn" onclick="openCommentModal('${resource.id}')" title="评论">
-            <i class="fa fa-comment"></i>
-          </button>
-          ${resource.type === 'code' ? `
-          <button class="resource-action-btn" onclick="downloadResource('${resource.id}')" title="下载">
-            <i class="fa fa-download"></i>
-          </button>
-          ` : ''}
-          <button class="resource-action-btn" onclick="openResourceModal('edit', '${resource.id}')" title="编辑">
-            <i class="fa fa-edit"></i>
-          </button>
-          <button class="resource-action-btn" onclick="deleteResource('${resource.id}')" title="删除">
-            <i class="fa fa-trash"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-  
-  return card;
-}
-
-// 获取类型图标
-function getTypeIcon(type) {
-  const icons = {
-    'desktop-app': 'fa-desktop',
-    'web-app': 'fa-globe',
-    'video': 'fa-play-circle-o',
-    'note': 'fa-book',
-    'code': 'fa-code'
-  };
-  return icons[type] || 'fa-file-o';
-}
-
-// 获取类型名称
-function getTypeName(type) {
-  const names = {
-    'desktop-app': '桌面应用',
-    'web-app': 'Web应用',
-    'video': '视频资源',
-    'note': '学习笔记',
-    'code': '代码资源'
-  };
-  return names[type] || '资源';
-}
-
-// 更新月度统计
-function updateMonthlyStats() {
-  const now = new Date();
-  const month = now.getMonth(); // 0-11
-  const monthIndex = Math.min(month, 5); // 只统计前6个月
-  
-  if (appData.stats.monthlyAdds[monthIndex]) {
-    appData.stats.monthlyAdds[monthIndex].count++;
-  }
-}
-
-// 更新统计
-function updateStats() {
-  // 更新资源类型统计
-  appData.stats.resourceCounts = {
-    'desktop-app': appData.resources.filter(r => r.type === 'desktop-app').length,
-    'web-app': appData.resources.filter(r => r.type === 'web-app').length,
-    'video': appData.resources.filter(r => r.type === 'video').length,
-    'note': appData.resources.filter(r => r.type === 'note').length,
-    'code': appData.resources.filter(r => r.type === 'code').length
-  };
-  
-  // 更新总统计
-  appData.stats.visits = appData.resources.reduce((sum, r) => sum + (r.views || 0), 0);
-  appData.stats.likes = appData.resources.reduce((sum, r) => sum + (r.likes || 0), 0);
-  appData.stats.comments = appData.comments.length;
-  
-  saveDataToLocalStorage();
-  initCharts(); // 重新渲染图表
-}
-
-// 初始化图表
-function initCharts() {
-  // 资源分布图表
-  const resourceCtx = dom.resourceChart.getContext('2d');
-  const resourceData = {
-    labels: ['桌面应用', 'Web应用', '视频资源', '学习笔记', '代码库'],
-    datasets: [{
-      data: [
-        appData.stats.resourceCounts['desktop-app'],
-        appData.stats.resourceCounts['web-app'],
-        appData.stats.resourceCounts['video'],
-        appData.stats.resourceCounts['note'],
-        appData.stats.resourceCounts['code']
-      ],
-      backgroundColor: [
-        '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'
-      ]
-    }]
-  };
-  
-  new Chart(resourceCtx, {
-    type: 'doughnut',
-    data: resourceData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  });
-  
-  // 月度添加量图表
-  const addCtx = dom.resourceAddChart.getContext('2d');
-  const addData = {
-    labels: appData.stats.monthlyAdds.map(m => m.month),
-    datasets: [{
-      label: '资源添加量',
-      data: appData.stats.monthlyAdds.map(m => m.count),
-      backgroundColor: '#3b82f6',
-      borderColor: '#1d4ed8',
-      borderWidth: 2,
-      fill: true
-    }]
-  };
-  
-  new Chart(addCtx, {
-    type: 'line',
-    data: addData,
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1
-          }
-        }
-      }
-    }
-  });
-}
-
-// 关闭模态框
-function closeModal(modal) {
-  modal.classList.remove('active');
-}
-
-// 显示通知
-function showNotification(message) {
-  // 简单的alert通知，可以替换为更优雅的Toast
-  alert(message);
-}
-
-// 绑定事件
-function bindEvents() {
-  // 移动端菜单
-  dom.menuBtn.addEventListener('click', () => {
-    dom.mobileMenu.classList.toggle('active');
-  });
-  
-  // 创建根列表按钮
-  dom.createRootListBtn.addEventListener('click', () => {
-    openListModal('create');
-  });
-  
-  // 列表表单提交
-  dom.submitListBtn.addEventListener('click', submitListForm);
-  dom.cancelModalBtn.addEventListener('click', () => closeModal(dom.listModal));
-  
-  // 资源表单提交
-  dom.submitResourceBtn.addEventListener('click', submitResourceForm);
-  dom.cancelResourceModalBtn.addEventListener('click', () => closeModal(dom.resourceModal));
-  
-  // 评论表单提交
-  dom.submitCommentBtn.addEventListener('click', submitComment);
-  dom.cancelCommentModalBtn.addEventListener('click', () => closeModal(dom.commentModal));
-  
-  // 关闭模态框
-  document.querySelectorAll('.modal-close').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const modal = this.closest('.modal');
-      closeModal(modal);
-    });
-  });
-  
-  // 点击模态框外部关闭
-  document.querySelectorAll('.modal').forEach(modal => {
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        closeModal(modal);
-      }
-    });
-  });
-  
-  // 订阅表单
-  document.querySelector('.subscribe-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const email = e.target.querySelector('.subscribe-input').value;
-    if (email) {
-      alert(`感谢订阅！我们将向 ${email} 发送更新通知`);
-      e.target.reset();
-    }
-  });
-  
-  // 导航链接平滑滚动
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', (e) => {
-      const href = link.getAttribute('href');
-      if (href !== '#') {
-        e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-          // 关闭移动端菜单
-          dom.mobileMenu.classList.remove('active');
-        }
-      }
-    });
-  });
-}
-
-// 页面加载完成后初始化
-document.addEventListener('DOMContentLoaded', init);
+  renderResourcesByType('web-app', dom.webAppsContainer
